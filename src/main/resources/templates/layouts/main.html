@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<!-- définir d’abord le namespace layout dans la balise html -->
+<html lang="fr"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.mx/thymeleaf/layout"  >
+    <head>
+        <meta charset="utf-8">
+        <title layout:title-pattern="$LAYOUT_TITLE - $CONTENT_TITLE">Projet Réservations</title>
+            <!-- blocs facultatifs permettant d’ajouter des fragments de style CSS dans l’en-tête de page HTML  -->
+            <th:block layout:fragment="css">
+            </th:block>
+    </head>
+    <body>
+        <!-- ce layout utilise le système standard d’insertion avec la directive th:replace -->
+        <div th:replace="fragments/header :: header">Header here</div>
+        <div class="container">
+            <!-- permet de personnaliser cette partie dans chaque template -->
+            <div layout:fragment="content">Main content will be inserted here.</div>
+        </div>
+        <div th:replace="fragments/footer :: footer">&copy; 2016 The Static Templates</div>
+            <!-- blocs facultatifs permettant d’ajouter des fragments de scripts JavaScript à la fin de la page.  -->
+            <th:block layout:fragment="scripts">
+            </th:block>
+    </body>
+</html>

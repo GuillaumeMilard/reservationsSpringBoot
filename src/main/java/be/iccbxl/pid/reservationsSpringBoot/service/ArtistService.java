@@ -10,8 +10,7 @@ import java.util.List;
 
 @Service //indiquer qu’il s’agit d’une classe service
 public class ArtistService {
-    @Autowired // permet d’initialiser automatiquement l’attribut artistRepository
-    // avec une instance de cette classe par injection de dépendance.
+    @Autowired
     private ArtistRepository artistRepository;
 
     public List<Artist> getAllArtists() {
