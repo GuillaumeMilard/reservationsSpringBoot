@@ -1,18 +1,29 @@
 package be.iccbxl.pid.reservationsSpringBoot.model;
 
-import jakarta.persistence.*;
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.persistence.Table;
 
-// Définir la classe comme entité
-@Entity
-// Spécifier le nom de la table
-@Table(name="artists")
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.Size;
+
+
+@Entity // Définir la classe comme entité
+@Table(name="artists") // Spécifier le nom de la table
 public class Artist {
-    // Propriété contenent l’identifiant unique, clé primaire de la table,
-    @Id
-    // Indique que Valeur générée automatiquement
-    @GeneratedValue(strategy= GenerationType.IDENTITY)
+
+    @Id // Propriété contenent l’identifiant unique, clé primaire de la table,
+    @GeneratedValue(strategy= GenerationType.IDENTITY) // Indique que Valeur générée automatiquement
     private Long id;
+
+    @NotBlank(message = "The firstname must not be empty.")
+    @Size(min=2, max=60, message = "The firstname must be between 2 and 60 characters long.")
     private String firstname;
+
+    @NotBlank(message = "The lastname must not be empty.")
+    @Size(min=2, max=60, message = "The firstname must be between 2 and 60 characters long.")
     private String lastname;
 
     public Artist() { }

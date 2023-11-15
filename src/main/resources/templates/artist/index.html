@@ -3,7 +3,7 @@
 <html lang="fr"
       xmlns:th="http://www.thymeleaf.org"
       xmlns:layout="http://www.ultraq.net.mx/thymeleaf/layout"
-      layout:decorate="~{layouts/main}" >
+      layout:decorate="~{layouts/main}">
         <!--  -->
     <head>
         <meta charset="UTF-8">
@@ -16,18 +16,20 @@
             <div layout:fragment="content">
                 <h1 th:text="${title}">Liste Des Artistes</h1>
                 <!-- th:unless permet d’afficher un contenu sauf si la condition est vraie   -->
-                <table th:unless="${#lists.isEmpty(artists)}" class = "table table-bordered table-striped">
+                <table th:unless="${#lists.isEmpty(artists)}">
                     <thead>
                         <tr>
                             <th>Firstname</th>
                             <th>Lastname</th>
+                            <th colspan="2">Actions</th>
                         </tr>
                     </thead>
                     <tbody>
-                        <!-- th:each permet de répéter l’affichage d’un contenu pour chaque élément d’une liste  -->
-                        <tr th:each="artist : ${artists}">
+                        <tr th:each="artist : ${artists}"> <!--répéter l’affichage d’un contenu pour chaque élément d’une liste -->
                             <td th:text="${artist.firstname}">Bob</td>
-                            <td><a th:text="${artist.lastname}" th:href="@{/artists/{id}(id=${artist.id})}">Sull</a></td>
+                            <td th:text="${artist.lastname}">Sull</td>
+                            <td><a th:href="@{/artists/{id}(id=${artist.id})}">View</a></td>
+                            <td><a th:href="@{/artists/{id}/edit(id=${artist.id})}">Edit</a></td>
                         </tr>
                     </tbody>
                 </table>
