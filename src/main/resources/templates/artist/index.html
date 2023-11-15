@@ -15,6 +15,10 @@
         <!-- layout:fragment présente la partie de code HTML qui est personnalisée : content -->
             <div layout:fragment="content">
                 <h1 th:text="${title}">Liste Des Artistes</h1>
+                <!-- Ajout d’un lien vers la page de formulaire d’ajout d’un artiste-->
+                <div class="actions">
+                    <a th:href="@{/artists/create}">Add new artist</a>
+                </div>
                 <!-- th:unless permet d’afficher un contenu sauf si la condition est vraie   -->
                 <table th:unless="${#lists.isEmpty(artists)}">
                     <thead>

@@ -11,6 +11,7 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 
 import java.util.List;
@@ -74,6 +75,30 @@ public class ArtistController {
       * le contrôleur s’interrompt et redirection automatique vers le formulaire
       * pour afficher les messages d’erreur
       */
+
+
+    @GetMapping("/artists/create")
+    public String create(Model model) {
+        Artist artist = new Artist(null,null);
+        model.addAttribute("artist", artist);
+        return "artist/create";
+    }//envoie une entité Artist vide au template create.html .
+
+    @PostMapping("/artists/create")
+    public String store(@Valid@ModelAttribute("artist") Artist artist, BindingResult bindingResult, Model model) {
+
+        if (bindingResult.hasErrors()) {
+            return "artist/create";
+        }
+        service.addArtist(artist);
+
+        return "redirect:/artists/"+artist.getId();
+    }/* 1) La methode reçoit les données du formulaire dans l’entité artist en paramètre
+     * 2) Avec @ModelAttribute, l’entité est automatiquement ajoutée au model
+     * 3) @Valid permet d’exécuter les contraintes de validation spécifiées dans l’entité
+     * 4) Puis persister l’entité au moyen de la couche service (addArtist)
+     * 5) Enfin, il y a redirection pour afficher la nouvelle entité.
+     */
 
 
 }
