@@ -8,11 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -35,11 +31,12 @@ public class ArtistController {
         model.addAttribute("artist", artist); // Ajouter l'objet Artist au modèle
         model.addAttribute("title", "Fiche d'un artiste");//Ajouter un attribut de titre au modèle
         return "artist/show"; //renvoie le nom logique de la vue à rendre
-    } /* La méthode extrait l'ID de l'URI,
+    } /* L’id de l’artiste est récupéré grâce à l’annotation @PathVariable
        * utilise un service pour obtenir les informations sur l'artiste correspondant à cet ID,
        * les ajoute au modèle et renvoie le nom logique de la vue à rendre.
        * La vue est associé à un fichier de vue Thymeleaf nommé "show.html" dans le dossier "artist"
        */
+
 
     @GetMapping("/artists/{id}/edit")
     public String edit(Model model, @PathVariable("id") long id, HttpServletRequest request) {
@@ -53,6 +50,7 @@ public class ArtistController {
         }
         return "artist/edit";
     }// retrouver l’artiste au moyen de son id, puis l’envoyer au template artist/edit
+
 
     @PutMapping("/artists/{id}/edit")
     public String update(@Valid@ModelAttribute("artist") Artist artist, BindingResult bindingResult, @PathVariable("id") long id, Model model) {
@@ -84,6 +82,7 @@ public class ArtistController {
         return "artist/create";
     }//envoie une entité Artist vide au template create.html .
 
+
     @PostMapping("/artists/create")
     public String store(@Valid@ModelAttribute("artist") Artist artist, BindingResult bindingResult, Model model) {
 
@@ -100,6 +99,14 @@ public class ArtistController {
      * 5) Enfin, il y a redirection pour afficher la nouvelle entité.
      */
 
+    @DeleteMapping("/artists/{id}")
+    public String delete(@PathVariable("id") long id, Model model) {
+        Artist existing = service.getArtist(id);
+        if(existing!=null) {
+            service.deleteArtist(id);
+        }
+        return "redirect:/artists";
+    }
 
 }
 
