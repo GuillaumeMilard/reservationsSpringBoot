@@ -6,11 +6,12 @@
     <head>
         <title>Création d'un artiste</title>
         <style> .fieldError { color: red; } </style>
+        <link rel="stylesheet" type="text/css" href="/webjars/bootstrap/5.3.2/css/bootstrap.min.css">
     </head>
     <body>
         <div class="container">
             <div layout:fragment="content">
-                <h1>Nouvel artiste</h1>
+                <h2>Nouvel artiste</h2>
                 <form th:action="@{/artists/create}" th:object="${artist}" method="post">
                     <div>
                         <label>Firstname:</label>
@@ -32,5 +33,6 @@
                 <nav><a th:href="@{/artists}">Retour à l'index</a></nav>
             </div>
         </div>
+        <script src="/webjars/bootstrap/5.2.3/js/bootstrap.bundle.min.js"></script>
     </body>
 </html>

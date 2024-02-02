@@ -2,28 +2,30 @@
 <!-- définir d’abord le namespace layout dans la balise html -->
 <html lang="fr"
       xmlns:th="http://www.thymeleaf.org" >
-      <!-- xmlns:layout="http://www.ultraq.net.mx/thymeleaf/layout" -->
-<head>
-    <meta charset="UTF-8">
-    <title>Header fragment</title>
-</head>
-<body>
-<header class="navbar navbar-inverse navbar-fixed-top" th:fragment="header">
-    <div class="container">
-        <div class="navbar-header">
-            <a class="navbar-brand" href="#">Réservations</a>
-        </div>
-        <div class="navbar-collapse collapse">
-            <ul class="nav navbar-nav">
-                <li th:classappend="${module == 'home' ? 'active' : ''}">
-                    <a href="#" th:href="@{/}">Home</a>
-                </li>
-                <li th:classappend="${module == 'artists' ? 'active' : ''}">
-                    <a href="#" th:href="@{/artists}">Artists</a>
-                </li>
-            </ul>
-        </div>
-    </div>
-</header>
-</body>
+    <head>
+        <meta charset="UTF-8">
+        <title>Header fragment</title>
+        <link rel="stylesheet" type="text/css" href="/webjars/bootstrap/5.3.2/css/bootstrap.min.css">
+    </head>
+    <body>
+        <!-- header représente l'en-tête visible de la page à l'utilisateur  -->
+        <header class="navbar navbar-inverse navbar-fixed-top" th:fragment="header">
+            <div class="container">
+                <div class="navbar-header">
+                    <a class="navbar-brand" href="#">Réservations</a>
+                </div>
+                <div class="navbar-collapse collapse">
+                    <ul class="nav navbar-nav">
+                        <li th:classappend="${module == 'home' ? 'active' : ''}">
+                            <a href="#" th:href="@{/}">Home</a>
+                        </li>
+                        <li th:classappend="${module == 'artists' ? 'active' : ''}">
+                            <a href="#" th:href="@{/artists}">Artists</a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </header>
+        <script src="/webjars/bootstrap/5.3.2/js/bootstrap.bundle.min.js"></script>
+    </body>
 </html>

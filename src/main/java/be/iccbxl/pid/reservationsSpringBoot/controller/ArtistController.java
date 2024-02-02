@@ -1,16 +1,15 @@
-package be.iccbxl.pid.reservationsSpringBoot.controllers;
+package be.iccbxl.pid.reservationsSpringBoot.controller;
 
 import be.iccbxl.pid.reservationsSpringBoot.model.Artist;
 import be.iccbxl.pid.reservationsSpringBoot.service.ArtistService;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.List;
 
 @Controller
 public class ArtistController {
@@ -18,10 +17,16 @@ public class ArtistController {
     @Autowired // initialiser automatiquement l’attribut service par injection de dépendance
     ArtistService service; // Permettre d'utiliser les méthodes métiers pour acceder et manipuler les données
     @GetMapping("/artists" )
-    public String index(Model model) {
-        List<Artist> artists = service.getAllArtists(); // Obtenir la liste des artistes
-        model.addAttribute( "artists", artists) ; // Ajouter au model l'attribut "artist" aui est associé à la liste d'artistes `artists
-        model.addAttribute("title", "liste des artistes"); // Ajouter au model un autre attribut "title" avec la valeur "liste des artistes"
+    public String index(Model model,
+                        @RequestParam(name = "page", defaultValue = "0") int p,
+                        @RequestParam(name = "size", defaultValue = "4") int s,
+                        @RequestParam(name = "keyword", defaultValue = "") String kw) {
+        Page<Artist> artistPage = service.getAllArtists(p, s, kw); // Obtenir les pages de liste des artistes
+        model.addAttribute( "artists", artistPage.getContent()) ; // Ajouter au model l'attribut "artist" aui est associé à la liste d'artistes `artists
+        model.addAttribute("title", "Liste des artistes"); // Ajouter au model un autre attribut "title" avec la valeur "liste des artistes"
+        model.addAttribute("pages", new int[artistPage.getTotalPages()]); //Ajouter le nb total de pages ds le model
+        model.addAttribute("currentPage",p); // Ajouter la page courant dans le model
+        model.addAttribute("keyword", kw);
         return "artist/index";
     } // La méthode renvoie le chemin d’accès au template index.html
 
@@ -43,7 +48,7 @@ public class ArtistController {
         Artist artist = service.getArtist(id);
         model.addAttribute("artist", artist);
         String referrer = request.getHeader("Referer"); //Générer le lien retour pour l'annulation
-        if(referrer!=null && !referrer.equals("")) {
+        if(referrer!=null && !referrer.isEmpty()) {
             model.addAttribute("back", referrer);
         } else {
             model.addAttribute("back", "/artists/"+artist.getId());
