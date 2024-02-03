@@ -23,7 +23,7 @@ public class Artist {
     private String firstname;
 
     @NotBlank(message = "The lastname must not be empty.")
-    @Size(min=2, max=60, message = "The firstname must be between 2 and 60 characters long.")
+    @Size(min=2, max=60, message = "The lastname must be between 2 and 60 characters long.")
     private String lastname;
 
     public Artist() { }
@@ -58,8 +58,7 @@ public class Artist {
     }
 
     @Override
-    public String toString() {
-        return firstname + " " + lastname ;
+    public String toString() { return firstname + " " + lastname ;
     }
 }
 
