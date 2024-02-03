@@ -58,8 +58,9 @@ public class Artist {
     }
 
     @Override
-    public String toString() { return firstname + " " + lastname ;
-    }
+    public String toString() { return firstname + " " + lastname ; }
+
+
 }
 
 
