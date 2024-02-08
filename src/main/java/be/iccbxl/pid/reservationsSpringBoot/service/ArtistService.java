@@ -7,6 +7,9 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
+import java.util.List;
+
 
 @Service //indiquer qu’il s’agit d’une classe service
 public class ArtistService {
@@ -35,6 +38,12 @@ public class ArtistService {
 
     public void deleteArtist(long id) {
         artistRepository.deleteById(id);
+    }
+
+    public List<Artist> getAllArtists() {
+       List<Artist> artists = new ArrayList<>();
+       artistRepository.findAll().forEach(artists::add);
+       return artists;
     }
 
 }

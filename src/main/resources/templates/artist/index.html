@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<!-- layout:decorate indique que le template index.html héritera du layout main.html -->
+<!-- layout:decorate indique que le template indexPage.html héritera du layout main.html -->
 <html lang="fr"
       xmlns:th="http://www.thymeleaf.org"
       xmlns:layout="http://www.ultraq.net.mx/thymeleaf/layout"
@@ -8,68 +8,35 @@
     <head> <!--Titre de l’en-tête de page HTML  -->
         <meta charset="UTF-8">
         <title>Liste des artistes</title>
+        <!-- Utilisation de Bootstrap avec le webjar dans pom.xml -->
         <link rel="stylesheet" type="text/css" href="/webjars/bootstrap/5.3.2/css/bootstrap.min.css">
     </head>
     <body>
-        <div class="container">
-        <!-- layout:fragment="content" présente la partie de code HTML qui est injectée dans main -->
-            <div layout:fragment="content">
-                <div class="container p-3 mt-3">
-                    <div class="text-left">
-                            <h2 th:text="${title}">Valeur de l'attribut title</h2>
-                    </div>
-                    <div class="row">
-                        <div class="col-8">
-                            <form method="get" th:action="@{artists}">
-                                <label> Keyword:</label>
-                                <input type="test" name="keyword" th:value="${keyword}">
-                                <button type="submit" class="btn btn-info">Find</button>
-                            </form>
-                        </div>
-                        <div class="col-4">
-                            <!-- Ajout d’un lien vers la page de formulaire d’ajout d’un artiste-->
-                            <div class="text-success">
-                                <a th:href="@{/artists/create}">Add new artist</a>
-                            </div>
-                        </div>
-                    </div>
-                    <!-- th:unless permet d’afficher un contenu sauf si la condition est vraie   -->
-                    <table class="table table-bordered" th:unless="${#lists.isEmpty(artists)}" >
-                        <thead class="table-dark">
-                            <tr>
-                                <th>ID</th>
-                                <th>Firstname</th>
-                                <th>Lastname</th>
-                                <th colspan="3">Actions</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr th:each="artist : ${artists}"> <!--répéter l’affichage d’un contenu pour chaque élément d’une liste -->
-                                <td th:text="${artist.id}">id</td>
-                                <td th:text="${artist.firstname}">Bob</td>
-                                <td th:text="${artist.lastname}">Sull</td>
-                                <td><a th:href="@{/artists/{id}(id=${artist.id})}">View</a></td>
-                                <td><a th:href="@{/artists/{id}/edit(id=${artist.id})}">Edit</a></td>
-                                <!--Modification de index.html pour ajouter l’action de suppression -->
-                                <td>
-                                    <form th:id="|deleteForm-${artist.id}|"
-                                          th:action="@{/artists/{id}(id=${artist.id})}" th:method="delete">
-                                        <a href="#" th:onclick="|if(confirm('Confirm delete artist #${artist.id}'))
-                                                                              document.getElementById('deleteForm-${artist.id}').submit();
-                                                                              return false;|">Delete</a>
-                                    </form>
-                                </td>
-                            </tr>
-                        </tbody>
-                    </table>
-                    <ul class="nav nav-pills">
-                        <li th:each="page,item:${pages}">
-                            <a th:href="@{/artists(page=${item.index})}"
-                               th:class="${(currentPage==item.index)?'btn btn-info ms-1':'btn btn-outline-info ms-1'}"
-                               th:text="${1 + item.index}"></a>
-                        </li>
-                    </ul>
-                </div>
+        <!-- layout:fragment="content" présente la partie de code HTML qui est injectée dans layout/main -->
+        <div layout:fragment="content">
+             <div class="container">
+                 <div class="card">
+                     <div class="card-header"> <h1 th:text="${title}"></h1></div>
+                     <div class="card-body">
+                         <table class="table" th:unless="${#lists.isEmpty(artists)}">
+                             <thead>
+                                 <tr>
+                                     <th>ID</th>
+                                     <th>Firstname</th>
+                                     <th>Lastname</th>
+                                 </tr>
+                             </thead>
+                             <tbody>
+                                 <tr th:each="artist : ${artists}">
+                                     <td th:text="${artist.id}">id</td>
+                                     <td th:text="${artist.firstname}">Bob</td>
+                                     <td><a th:text="${artist.lastname}"
+                                            th:href="@{/artists/{id}(id=${artist.id})}">Sull</a></td>
+                                 </tr>
+                             </tbody>
+                         </table>
+                     </div>
+                 </div>
             </div>
         </div>
         <script src="/webjars/bootstrap/5.2.3/js/bootstrap.bundle.min.js"></script>

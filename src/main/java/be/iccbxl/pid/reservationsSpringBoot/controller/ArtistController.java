@@ -5,11 +5,12 @@ import be.iccbxl.pid.reservationsSpringBoot.service.ArtistService;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @Controller
 public class ArtistController {
@@ -18,35 +19,18 @@ public class ArtistController {
     @Autowired
 
     // Permettre d'utiliser les méthodes métiers pour acceder et manipuler les données Artist
-    ArtistService service;
+    ArtistService artistService;
 
-    @GetMapping("/artists" )
-    //La méthode renvoie le chemin d’accès au template index.html
-    public String index(Model model,
-                        @RequestParam(name = "page", defaultValue = "0") int p,
-                        @RequestParam(name = "size", defaultValue = "4") int s,
-                        @RequestParam(name = "keyword", defaultValue = "") String kw) {
-
-        // Obtenir les pages de liste des artistes
-        Page<Artist> artistPage = service.getAllArtists(p, s, kw);
-
-        // Ajouter au model l'attribut "artist" aui est associé à la liste d'artistes `artists
-        model.addAttribute( "artists", artistPage.getContent()) ;
-
-        // Ajouter au model un autre attribut "title" avec la valeur "liste des artistes"
+    @GetMapping("/artists")
+    public String index(Model model){
+        List<Artist> artists = artistService.getAllArtists();
+        model.addAttribute("artists", artists);
         model.addAttribute("title", "Liste des artistes");
-
-        //Ajouter le nombre total de pages ds le model
-        model.addAttribute("pages", new int[artistPage.getTotalPages()]);
-
-        // Ajouter la page courante dans le model
-        model.addAttribute("currentPage",p);
-        model.addAttribute("keyword", kw);
         return "artist/index";
     }
 
-    @GetMapping("/artists/{id}") //Gère les requêtes HTTP GET pour un ID d'artiste spécifique.
 
+    @GetMapping("/artists/{id}") //Gère les requêtes HTTP GET pour un ID d'artiste spécifique.
     /* L’id de l’artiste est récupéré grâce à l’annotation @PathVariable
      * utilise un service pour obtenir les informations sur l'artiste correspondant à cet ID,
      * les ajoute au modèle et renvoie le nom logique de la vue à rendre.
@@ -55,7 +39,7 @@ public class ArtistController {
     public String show(Model model, @PathVariable("id") long id) {
 
         // obtenir l'objet Artist sur base de l'ID fourni
-        Artist artist = service.getArtist(id);
+        Artist artist = artistService.getArtist(id);
 
         // Ajouter l'objet Artist au modèle
         model.addAttribute("artist", artist);
@@ -67,11 +51,10 @@ public class ArtistController {
         return "artist/show";
     }
 
-
     @GetMapping("/artists/{id}/edit")
     // Retrouver l’artiste au moyen de son id, puis l’envoyer au template artist/edit
     public String edit(Model model, @PathVariable("id") long id, HttpServletRequest request) {
-        Artist artist = service.getArtist(id);
+        Artist artist = artistService.getArtist(id);
         model.addAttribute("artist", artist);
         String referrer = request.getHeader("Referer"); //Générer le lien retour pour l'annulation
         if(referrer!=null && !referrer.isEmpty()) {
@@ -100,11 +83,11 @@ public class ArtistController {
             return "artist/edit";
         }
 
-        Artist existing = service.getArtist(id);
+        Artist existing = artistService.getArtist(id);
         if(existing==null) {
             return "artist/index";
         }
-        service.updateArtist(id, artist);
+        artistService.updateArtist(id, artist);
 
         return "redirect:/artists/" + artist.getId();
     }
@@ -125,7 +108,7 @@ public class ArtistController {
         if (bindingResult.hasErrors()) {
             return "artist/create";
         }
-        service.addArtist(artist);
+        artistService.addArtist(artist);
 
         return "redirect:/artists/"+artist.getId();
     }
@@ -138,9 +121,9 @@ public class ArtistController {
      * 5) Enfin, il y a redirection pour afficher la nouvelle entité.
      */
     public String delete(@PathVariable("id") long id, Model model) {
-        Artist existing = service.getArtist(id);
+        Artist existing = artistService.getArtist(id);
         if(existing!=null) {
-            service.deleteArtist(id);
+            artistService.deleteArtist(id);
         }
         return "redirect:/artists";
     }
