@@ -48,8 +48,6 @@ public class ArtistController {
         return "artist/edit";
     }
 
-
-
     @PutMapping("/artists/{id}/edit")
     public String update(@Valid @ModelAttribute Artist artist, BindingResult bindingResult, @PathVariable long id, Model model) {
         if (bindingResult.hasErrors()) {
@@ -63,14 +61,12 @@ public class ArtistController {
         return "redirect:/artists/"+artist.getId();
     }
 
-
     @GetMapping("/artists/create")
     public String create(Model model) {
         Artist artist = new Artist();
         model.addAttribute("artist", artist);
         return "artist/create";
     }
-
 
     @PostMapping("/artists/create")
     public String store(@Valid @ModelAttribute Artist artist, BindingResult bindingResult, Model model) {
@@ -79,6 +75,15 @@ public class ArtistController {
         }
         service.addArtist(artist);
         return "redirect:/artists/"+artist.getId();
+    }
+
+    @DeleteMapping("/artists/{id}")
+    public String delete(@PathVariable long id, Model model) {
+        Artist existing = service.getArtist(id);
+        if(existing!=null) {
+            service.deleteArtist(id);
+        }
+        return "redirect:/artists";
     }
 
 
