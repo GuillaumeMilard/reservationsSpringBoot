@@ -12,3 +12,4 @@ INSERT INTO `artists` (`id`, `firstname`, `lastname`) VALUES
 (11, 'Laurence', 'Warin'),
 (12, 'Pierre', 'Wayburn'),
 (13, 'Gwendoline', 'Gauthier');
+
