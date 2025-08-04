@@ -1,26 +1,28 @@
-<!DOCTYPE html>
-<html lang="fr">
-<head>
-  <meta charset="utf-8">
-  <title>Header fragment</title>
-</head>
-<body>
-<header class="navbar navbar-inverse navbar-fixed-top" th:fragment="header">
-  <div class="container">
-    <div class="navbar-header">
-      <a class="navbar-brand" href="#">Réservations</a>
-    </div>
-    <div class="navbar-collapse collapse">
-      <ul class="nav navbar-nav">
-        <li th:classappend="${module == 'home' ? 'active' : ''}">
-          <a href="#" th:href="@{/}">Home</a>
+<header th:fragment="header"
+        xmlns:th="http://www.thymeleaf.org"
+        xmlns:sec="http://www.thymeleaf.org/extras/spring-security"
+        class="navbar navbar-expand-lg navbar-dark bg-dark">
+
+  <div class="container-fluid">
+    <a class="navbar-brand" href="#" th:href="@{/}">Réservations</a>
+    <div class="collapse navbar-collapse">
+      <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+        <li class="nav-item" th:classappend="${module == 'home'} ? 'active'">
+          <a class="nav-link" th:href="@{/}">Accueil</a>
         </li>
-        <li th:classappend="${module == 'artists' ? 'active' : ''}">
-          <a href="#" th:href="@{/artists}">Artists</a>
+        <li class="nav-item" th:classappend="${module == 'artists'} ? 'active'">
+          <a class="nav-link" th:href="@{/artists}">Artistes</a>
         </li>
       </ul>
+      <div class="d-flex">
+        <p class="text-white mb-0 me-3" sec:authorize="isAuthenticated()">
+          Bienvenue <span sec:authentication="name"></span> |
+          <a class="link-light" th:href="@{/logout}">Se déconnecter</a>
+        </p>
+        <p class="text-white mb-0" sec:authorize="!isAuthenticated()">
+          <a class="link-light" th:href="@{/login}">Se connecter</a>
+        </p>
+      </div>
     </div>
   </div>
 </header>
-</body>
-</html>

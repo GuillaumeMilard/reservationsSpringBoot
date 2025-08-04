@@ -1,12 +1,5 @@
-<!DOCTYPE html>
-<html lang="fr">
-<head>
-    <meta charset="utf-8">
-    <title>Footer fragment</title>
-</head>
-<body>
-<footer th:fragment="footer">
-    &copy; 2024 – EPFC / ICC – Projet Réservations
+<footer th:fragment="footer"
+        xmlns:th="http://www.thymeleaf.org"
+        class="text-center mt-5 mb-3 text-muted">
+    &copy; <span th:text="${#dates.format(#dates.createNow(), 'yyyy')}"></span> – EPFC / ICC – Projet PID Réservations
 </footer>
-</body>
-</html>
