@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" xmlns:th="http://www.w3.org/1999/xhtml"
+      layout:decorate="~{layouts/main}">
+
+<head>
+    <title>Création d'un type</title>
+    <style>
+        .fieldError { color: red; }
+    </style>
+</head>
+
+<body>
+
+<div class="container">
+    <div layout:fragment="content">
+        <h2>Nouveau type</h2>
+        <!-- Formulaire de création -->
+        <form th:action="@{/types/create}" th:object="${type}" method="post">
+            <!-- Champ "type" -->
+            <div class="mb-3">
+                <label for="name">Nom du type</label>
+                <input type="text" id="name" th:field="*{name}" class="form-control">
+            </div>
+            <div class="d-flex gap-3 mt-3">
+                <button type="submit" th:text="'Add'" class="btn btn-success">Enregistrer</button>
+                <a th:href="${back}" class="btn btn-secondary">Cancel</a>
+                <a th:href="@{/types}" class="btn btn-outline-secondary">Back to index</a>
+            </div>
+        </form>
+    </div>
+</div>
+</body>
+</html>

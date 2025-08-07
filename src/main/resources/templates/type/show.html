@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layouts/main}">
+<head>
+  <title>Fiche d'un type</title>
+</head>
+<body>
+<div layout:fragment="content" class="container mt-5">
+
+  <h1 class="mb-4">Fiche d'un type</h1>
+
+  <!-- Détails du type -->
+  <dl class="row">
+    <!-- <dt class="col-sm-2">ID</dt>
+    <dd class="col-sm-10" th:text="${type.id}">1</dd> -->
+
+    <dt class="col-sm-2">Nom</dt>
+    <dd class="col-sm-10" th:text="${type.name}">Comédien</dd>
+  </dl>
+
+  <!-- Actions -->
+  <div class="d-flex gap-2 mt-4">
+    <a th:href="@{/types}" class="btn btn-secondary">Return to list</a>
+    <a th:href="@{/types/{id}/edit(id=${type.id})}" class="btn btn-warning" th:text="'Edit'">Modifier</a>
+    <!-- Formulaire de suppression -->
+    <form th:id="|deleteForm-${type.id}|"
+          th:action="@{/types/{id}(id=${type.id})}"
+          method="post"  class="m-0 p-0">
+      <input type="hidden" name="_method" value="delete" />
+      <a href="#"
+         th:onclick="|if(confirm('Confirmer la suppression du type #${type.id}'))
+            document.getElementById('deleteForm-${type.id}').submit(); return false;|"
+         class="btn btn-danger">Delete</a>
+    </form>
+  </div>
+</div>
+</body>
+</html>
+<!-- This template displays the details of a specific type. -->

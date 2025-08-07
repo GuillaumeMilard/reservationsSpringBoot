@@ -19,6 +19,7 @@ public class ArtistController {
     @Autowired
     ArtistService service;
 
+    // Afficher la liste des artistes
     @GetMapping("/artists")
     public String index(Model model) {
         List<Artist> artists = service.getAllArtists();
@@ -27,18 +28,22 @@ public class ArtistController {
         return "artist/index";
     }
 
-
+    // Afficher un artiste dont l'id est passé en paramètre dans l'URL
     @GetMapping("/artists/{id}")
-    public String show(Model model, @PathVariable("id") long id) {
+    public String show(@PathVariable Long id, Model model, RedirectAttributes redirAttrs) {
         Artist artist = service.getArtist(id);
+        if (artist == null) {
+            redirAttrs.addFlashAttribute("errorMessage", "Artiste introuvable !");
+            return "redirect:/artists";
+        }
         model.addAttribute("artist", artist);
         model.addAttribute("title", "Fiche d'un artiste");
         return "artist/show";
     }
 
-
+    // Afficher le formulaire d'édition d'un artiste dont l'id est passé en paramètre dans l'URL
     @GetMapping("/artists/{id}/edit")
-    public String edit(Model model, @PathVariable long id, HttpServletRequest request) {
+    public String edit(Model model, @PathVariable Long id, HttpServletRequest request) {
         Artist artist = service.getArtist(id);
         model.addAttribute("artist", artist);
         //Générer le lien retour pour l'annulation
@@ -51,10 +56,10 @@ public class ArtistController {
         return "artist/edit";
     }
 
-
+    // Mettre à jour le formulaire d'édition d'un artiste
     @PutMapping("/artists/{id}/edit")
     public String update(@Valid @ModelAttribute Artist artist, BindingResult bindingResult,
-                         @PathVariable long id, Model model, RedirectAttributes redirAttrs) {
+                         @PathVariable Long id, Model model, RedirectAttributes redirAttrs) {
         if (bindingResult.hasErrors()) {
             model.addAttribute("errorMessage", "Echec de la modification de l'artiste !");
             return "artist/edit";
@@ -68,7 +73,7 @@ public class ArtistController {
         return "redirect:/artists/"+artist.getId();
     }
 
-
+    // Afficher le formulaire de création d'un artiste
     @GetMapping("/artists/create")
     public String create(Model model) {
         if (!model.containsAttribute("artist")) {
@@ -77,7 +82,7 @@ public class ArtistController {
         return "artist/create";
     }
 
-
+    // Enregistrer un nouvel artiste
     @PostMapping("/artists/create")
     public String store(@Valid @ModelAttribute Artist artist, BindingResult bindingResult,
                         Model model, RedirectAttributes redirAttrs) {
@@ -88,12 +93,12 @@ public class ArtistController {
         }
         service.addArtist(artist);
         redirAttrs.addFlashAttribute("successMessage", "Artiste créé avec succès.");
-        return "redirect:/artists/"+artist.getId();
+        return "redirect:/artists/"+ artist.getId();
     }
 
-
+    // Supprimer un artiste dont l'id est passé en paramètre dans l'URL
     @DeleteMapping("/artists/{id}")
-    public String delete(@PathVariable long id, Model model, RedirectAttributes redirAttrs) {
+    public String delete(@PathVariable Long id, RedirectAttributes redirAttrs) {
         Artist existing = service.getArtist(id);
         if(existing!=null) {
             service.deleteArtist(id);

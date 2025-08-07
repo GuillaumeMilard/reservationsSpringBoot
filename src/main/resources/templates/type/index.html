@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layouts/main}">
+<head>
+    <title>Liste des types</title>
+</head>
+<body>
+<div layout:fragment="content" class="container mt-5">
+
+    <h1>Liste des types</h1>
+
+    <!-- Messages de succès ou d'erreur
+    <div th:if="${successMessage}" class="alert alert-success" th:text="${successMessage}"></div>
+    <div th:if="${errorMessage}" class="alert alert-danger" th:text="${errorMessage}"></div>
+    -->
+    <!-- Lien de création -->
+    <div class="mb-3">
+        <a class="btn btn-success" th:href="@{/types/create}">Add type</a>
+    </div>
+
+    <!-- Tableau des types -->
+    <table class="table table-striped">
+        <thead>
+        <tr>
+            <!-- <th>ID</th> -->
+            <th>Nom du type</th>
+            <th>Actions</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="type : ${types}">
+            <!-- <td th:text="${type.id}">1</td> -->
+            <td th:text="${type.name}">Comédien</td>
+            <td>
+                <a th:href="@{/types/{id}(id=${type.id})}" class="btn btn-info btn-sm">Details</a>
+                <a th:href="@{/types/{id}/edit(id=${type.id})}" class="btn btn-warning btn-sm">Edit</a>
+                <!-- Suppression -->
+                <form th:action="@{/types/{id}(id=${type.id})}" th:method="delete"
+                      th:id="|deleteForm-${type.id}|" style="display: inline;">
+                    <a href="#" class="btn btn-sm btn-outline-danger"
+                       th:onclick="|if(confirm('Confirmer la suppression du type #${type.id}'))
+                       document.getElementById('deleteForm-${type.id}').submit(); return false;|">
+                       Delete</a>
+                </form>
+            </td>
+        </tr>
+        </tbody>
+    </table>
+</div>
+</body>
+</html>
+
