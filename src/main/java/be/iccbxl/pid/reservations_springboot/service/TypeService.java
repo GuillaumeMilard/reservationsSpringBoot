@@ -26,25 +26,16 @@ public class TypeService {
         return typeRepository.findById(id);
     }
 
-//    public Type getType(Long id) {
-//        return typeRepository.findById(id).orElse(null);
-//    }
-
     public void addType(Type type) {
         typeRepository.save(type);
     }
 
     public void updateType(Long id, Type type) {
-        if (typeRepository.existsById(id)) {
-            type.setId(id); // s'assurer que l'ID est bien celui passé en paramètre
-            typeRepository.save(type);
-        }
+       typeRepository.save(type);
     }
 
     public void deleteType(Long id) {
-        if (typeRepository.existsById(id)) {
-            typeRepository.deleteById(id);
-        }
+        typeRepository.deleteById(id);
     }
 
 }
