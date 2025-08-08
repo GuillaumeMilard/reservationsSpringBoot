@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.util.List;
+import java.util.Optional;
 
 @Controller
 public class TypeController {
@@ -31,16 +32,22 @@ public class TypeController {
 
     // Afficher un type dont l'id est passé en paramètre dans l'URL
     @GetMapping("/types/{id}")
-    public String show(@PathVariable Long id, Model model, RedirectAttributes redirAttrs) {
-        Type type = typeService.getType(id);
-        if (type == null) {
+    public String show(@PathVariable Long id,
+                       Model model,
+                       RedirectAttributes redirAttrs) {
+        Optional<Type> optionalType = typeService.getType(id);
+
+        if (optionalType.isEmpty()) {
             redirAttrs.addFlashAttribute("errorMessage", "Type introuvable !");
             return "redirect:/types";
         }
+        // Si le type existe, on l'ajoute au modèle
+        Type type = optionalType.get();
         model.addAttribute("type", type);
-        model.addAttribute("title", "Fiche d'un type");
+        model.addAttribute("title", "Fiche type");
         return "type/show";
     }
+
 
     // Afficher le formulaire de création d'un nouveau type
     @GetMapping("/types/create")
@@ -64,56 +71,55 @@ public class TypeController {
         return "redirect:/types/" + type.getId();
     }
 
-//    // Enregistrer un nouveau type
-//    @PostMapping("/types")
-//    public String store(Type type) {
-//        typeService.addType(type);
-//        return "redirect:/types/" + type.getId();
-//    }
-
-
 
     // Afficher le formulaire d'édition d'un type dont l'id est passé en paramètre dans l'URL
     @GetMapping("/types/{id}/edit")
-    public String edit(@PathVariable Long id, Model model, RedirectAttributes redirAttrs) {
-        Type type = typeService.getType(id);
-        if (type == null) {
+    public String edit(@PathVariable Long id,
+                       Model model,
+                       RedirectAttributes redirAttrs) {
+
+        Optional<Type> optionalType = typeService.getType(id);
+        if (optionalType.isEmpty()) {
             redirAttrs.addFlashAttribute("errorMessage", "Type introuvable !");
             return "redirect:/types";
         }
+
+        Type type = optionalType.get();
         model.addAttribute("type", type);
         model.addAttribute("back", "/types/" + type.getId());
         return "type/edit";
     }
 
+
     // Mettre à jour le formulaire d'édition d'un type
     @PutMapping("/types/{id}")
-    public String update(@PathVariable Long id, @Valid @ModelAttribute Type type,
+    public String update(@PathVariable Long id,
+                         @Valid @ModelAttribute Type type,
                          BindingResult bindingResult, RedirectAttributes redirAttrs) {
+        // Vérifier les erreurs de validation
         if (bindingResult.hasErrors()) {
             return "type/edit";
         }
-        if (typeService.getType(id) == null) {
+        // Vérifier si le type existe avant de le mettre à jour
+        Optional<Type> existingType = typeService.getType(id);
+        if (existingType.isEmpty()) {
             redirAttrs.addFlashAttribute("errorMessage", "Type introuvable !");
             return "redirect:/types";
         }
+        // Mettre à jour le type
         typeService.updateType(id, type);
         redirAttrs.addFlashAttribute("successMessage", "Type modifié avec succès.");
         return "redirect:/types/" + id;
     }
 
-//    // Mettre à jour le formulaire d'édition d'un type
-//    @PutMapping("/types/{id}")
-//    public String update(@PathVariable Long id, @ModelAttribute Type type) {
-//        typeService.updateType(id, type);
-//        return "redirect:/types/" + id;
-//    }
-
 
     // Supprimer un type dont l'id est passé en paramètre dans l'URL
     @DeleteMapping("/types/{id}")
-    public String delete(@PathVariable Long id, RedirectAttributes redirAttrs) {
-        if (typeService.getType(id) != null) {
+    public String delete(@PathVariable Long id,
+                         RedirectAttributes redirAttrs) {
+    // Vérifier si le type existe avant de le supprimer
+        Optional<Type> type = typeService.getType(id);
+        if (type.isPresent()) {
             typeService.deleteType(id);
             redirAttrs.addFlashAttribute("successMessage", "Type supprimé avec succès.");
         } else {

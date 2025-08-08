@@ -16,6 +16,8 @@
 
                 <!-- Formulaire de création -->
                 <form th:action="@{/types/create}" th:object="${type}" method="post">
+                    <!-- CSRF Token pour la sécurité -->
+                    <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}" />
                     <div class="mb-3">
                         <label for="name">Nom du type</label>
                         <input type="text" id="name" th:field="*{name}" class="form-control"

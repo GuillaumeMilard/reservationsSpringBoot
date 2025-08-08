@@ -7,6 +7,8 @@ import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
+
 
 @Service
 public class TypeService {
@@ -20,9 +22,13 @@ public class TypeService {
         return types;
     }
 
-    public Type getType(Long id) {
-        return typeRepository.findById(id).orElse(null);
+    public Optional<Type> getType(Long id) {
+        return typeRepository.findById(id);
     }
+
+//    public Type getType(Long id) {
+//        return typeRepository.findById(id).orElse(null);
+//    }
 
     public void addType(Type type) {
         typeRepository.save(type);
