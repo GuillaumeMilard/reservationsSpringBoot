@@ -8,15 +8,12 @@
 <body>
 <div layout:fragment="content" class="container mt-5">
 
-    <h1>Liste des types</h1>
+    <h2 class="mb-4">Gestion des types</h2>
 
-    <!-- Messages de succès ou d'erreur
-    <div th:if="${successMessage}" class="alert alert-success" th:text="${successMessage}"></div>
-    <div th:if="${errorMessage}" class="alert alert-danger" th:text="${errorMessage}"></div>
-    -->
     <!-- Lien de création -->
     <div class="mb-3">
-        <a th:href="@{/types/create}" class="btn btn-success"><i class="bi bi-plus-square"></i>Add type</a>
+        <a th:href="@{/types/create}"
+           class="btn btn-success"><i class="bi bi-plus-square me-1"></i>Add type</a>
     </div>
 
     <!-- Tableau des types -->
