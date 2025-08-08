@@ -16,7 +16,7 @@
     -->
     <!-- Lien de création -->
     <div class="mb-3">
-        <a class="btn btn-success" th:href="@{/types/create}">Add type</a>
+        <a th:href="@{/types/create}" class="btn btn-success"><i class="bi bi-plus-square"></i>Add type</a>
     </div>
 
     <!-- Tableau des types -->
@@ -33,16 +33,14 @@
             <!-- <td th:text="${type.id}">1</td> -->
             <td th:text="${type.name}">Comédien</td>
             <td>
-                <a th:href="@{/types/{id}(id=${type.id})}" class="btn btn-info btn-sm">Details</a>
-                <a th:href="@{/types/{id}/edit(id=${type.id})}" class="btn btn-warning btn-sm">Edit</a>
-                <!-- Suppression -->
-                <form th:action="@{/types/{id}(id=${type.id})}" th:method="delete"
-                      th:id="|deleteForm-${type.id}|" style="display: inline;">
-                    <a href="#" class="btn btn-sm btn-outline-danger"
-                       th:onclick="|if(confirm('Confirmer la suppression du type #${type.id}'))
-                       document.getElementById('deleteForm-${type.id}').submit(); return false;|">
-                       Delete</a>
-                </form>
+                <div class="d-flex gap-1">
+                    <a th:href="@{/types/{id}(id=${type.id})}"
+                       class="btn btn-info btn-sm"><i class="bi bi-eye"></i>Details</a>
+                    <a th:href="@{/types/{id}/edit(id=${type.id})}"
+                       class="btn btn-warning btn-sm"><i class="bi bi-pencil"></i>Edit</a>
+                    <!-- Fragment de confirmation pour suppression -->
+                    <div th:replace="~{fragments/delete :: deleteForm(${type}, 'types')}"></div>
+                </div>
             </td>
         </tr>
         </tbody>

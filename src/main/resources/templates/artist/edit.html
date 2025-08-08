@@ -14,10 +14,10 @@
         <h1 th:text="|${artist.firstname}  ${artist.lastname}|">Bob Sull</h1>
 
         <form th:action="@{/artists/{id}/edit(id=${artist.id})}" th:object="${artist}" th:method="put">
-            <div>
+            <!--<div>
                 <label>Id:</label>
                 <span th:text="${artist.id}">1</span>
-            </div>
+            </div> -->
             <div>
                 <label>Firstname:</label>
                 <input type="text" th:field="*{firstname}" maxlength="60" required>
@@ -30,14 +30,21 @@
                 <p th:if="${#fields.hasErrors('lastname')}"
                    th:errors="*{lastname}" th:errorclass="fieldError"></p>
             </div>
-            <div>
-                <button type="submit" th:text="Modifier">Modifier</button>
-                <button type="reset" th:text="Réinitialiser">Réinitialiser</button>
-                <a th:href="${back}">Annuler</a>
+            <div class="d-flex gap-3 mt-3">
+                <button type="submit"
+                        class="btn btn-primary btn-sm"><i class="bi bi-pencil-square me-1"></i>Update
+                </button>
+                <button type="reset"
+                        class="btn btn-warning btn-sm"><i class="bi bi-arrow-counterclockwise me-1"></i>Reset
+                </button>
+                <a th:href="${back}"
+                   class="btn btn-secondary btn-sm"><i class="bi bi-x-circle me-1"></i>Cancel
+                </a>
+                <a th:href="@{/artists}"
+                   class="btn btn-secondary btn-sm"><i class="bi bi-arrow-left"></i>Return to list
+                </a>
             </div>
         </form>
-
-        <nav><a th:href="@{/artists}">Retour à l'index</a></nav>
     </div>
 </div>
 </body>

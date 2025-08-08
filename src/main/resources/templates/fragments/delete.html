@@ -1,0 +1,11 @@
+<!-- fragment de confirmation pour suppression -->
+<div th:fragment="deleteForm(entity, urlPrefix)">
+  <form th:action="@{'/' + ${urlPrefix} + '/' + ${entity.id}}"
+        method="post"
+        class="d-inline"
+        onsubmit="return confirm('Êtes-vous sûr de vouloir supprimer cet élément ?');">
+    <input type="hidden" name="_method" value="delete"/>
+    <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}"/>
+    <button type="submit" class="btn btn-danger btn-sm"><i class="bi bi-trash">Delete</i></button>
+  </form>
+</div>

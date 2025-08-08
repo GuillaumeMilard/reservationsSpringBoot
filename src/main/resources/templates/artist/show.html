@@ -8,19 +8,19 @@
 <div class="container">
 
     <div layout:fragment="content">
-        <h1 th:text="|${artist.firstname}  ${artist.lastname}|">Bob Sull</h1>
 
-        <div class="actions">
-            <a th:href="@{/artists/{id}/edit(id=${artist.id})}">Edit</a>
-            <!-- Formulaire de suppression -->
-            <form th:id="|deleteForm-${artist.id}|"
-                  th:action="@{/artists/{id}(id=${artist.id})}" th:method="delete">
-                <a href="#" th:onclick="|if(confirm('Confirm delete artist #${artist.id}'))
-	        		document.getElementById('deleteForm-${artist.id}').submit();
-	         		return false;|">Delete</a>
-            </form>
+        <h1 class="mb-4">Fiche artiste</h1>
+        <!-- Détails de l'artiste -->
+        <h2 th:text="|${artist.firstname}  ${artist.lastname}|">Bob Sull</h2>
+
+        <div class="actions d-flex gap-2 mt-4">
+            <a th:href="@{/artists}"
+               class="btn btn-secondary btn-sm"><i class="bi bi-arrow-left"></i>Return to list</a>
+            <a th:href="@{/artists/{id}/edit(id=${artist.id})}"
+               class="btn btn-warning btn-sm"><i class="bi bi-pencil"></i>Edit</a>
+            <!-- Fragment de confirmation pour suppression -->
+            <div th:replace="~{fragments/delete :: deleteForm(${artist}, 'artists')}"></div>
         </div>
-        <nav><a th:href="@{/artists}">Retour à l'index</a></nav>
     </div>
 </div>
 </body>

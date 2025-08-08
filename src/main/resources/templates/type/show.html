@@ -8,7 +8,7 @@
 <body>
 <div layout:fragment="content" class="container mt-5">
 
-  <h1 class="mb-4">Fiche d'un type</h1>
+  <h2 class="mb-4">Fiche type</h2>
 
   <!-- Détails du type -->
   <dl class="row">
@@ -21,18 +21,12 @@
 
   <!-- Actions -->
   <div class="d-flex gap-2 mt-4">
-    <a th:href="@{/types}" class="btn btn-secondary">Return to list</a>
-    <a th:href="@{/types/{id}/edit(id=${type.id})}" class="btn btn-warning" th:text="'Edit'">Modifier</a>
-    <!-- Formulaire de suppression -->
-    <form th:id="|deleteForm-${type.id}|"
-          th:action="@{/types/{id}(id=${type.id})}"
-          method="post"  class="m-0 p-0">
-      <input type="hidden" name="_method" value="delete" />
-      <a href="#"
-         th:onclick="|if(confirm('Confirmer la suppression du type #${type.id}'))
-            document.getElementById('deleteForm-${type.id}').submit(); return false;|"
-         class="btn btn-danger">Delete</a>
-    </form>
+    <a th:href="@{/types}"
+       class="btn btn-secondary btn-sm"><i class="bi bi-arrow-left"></i>Return to list</a>
+    <a th:href="@{/types/{id}/edit(id=${type.id})}" class="btn btn-warning btn-sm">
+      <i class="bi bi-pencil"></i>Edit</a>
+    <!-- Fragment de confirmation pour suppression -->
+    <div th:replace="~{fragments/delete :: deleteForm(${type}, 'types')}"></div>
   </div>
 </div>
 </body>

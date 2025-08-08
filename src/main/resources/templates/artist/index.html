@@ -14,7 +14,8 @@
 
     <!-- Bouton d'ajout -->
     <div class="mb-3">
-        <a th:href="@{/artists/create}" class="btn btn-success">Ajouter un artiste</a>
+        <a th:href="@{/artists/create}"
+           class="btn btn-success"><i class="bi bi-plus-square"></i>Add artist</a>
     </div>
 
     <!-- Tableau des artistes -->
@@ -31,29 +32,22 @@
             <td th:text="${artist.firstname}">Prénom</td>
             <td th:text="${artist.lastname}">Nom</td>
             <td>
-                <a th:href="@{/artists/{id}(id=${artist.id})}" class="btn btn-sm btn-outline-primary">Voir</a>
-                <a th:href="@{/artists/{id}/edit(id=${artist.id})}" class="btn btn-sm btn-outline-secondary">Modifier</a>
-
-                <!-- Suppression -->
-                <form th:action="@{/artists/{id}(id=${artist.id})}" th:method="delete"
-                      th:id="|deleteForm-${artist.id}|" style="display: inline;">
-                    <a href="#" class="btn btn-sm btn-outline-danger"
-                       th:onclick="|if(confirm('Confirmer la suppression de l\'artiste #${artist.id}')) {
-                           document.getElementById('deleteForm-${artist.id}').submit();
-                       } return false;|">
-                        Supprimer
-                    </a>
-                </form>
+                <div class="d-flex gap-1">
+                    <a th:href="@{/artists/{id}(id=${artist.id})}"
+                       class="btn btn-info btn-sm"><i class="bi bi-eye"></i>Details</a>
+                    <a th:href="@{/artists/{id}/edit(id=${artist.id})}"
+                       class="btn btn-warning btn-sm"><i class="bi bi-pencil"></i>Edit</a>
+                    <!-- Fragment de confirmation pour suppression -->
+                    <div th:replace="~{fragments/delete :: deleteForm(${artist}, 'artists')}"></div>
+                </div>
             </td>
         </tr>
         </tbody>
     </table>
-
     <!-- Message si aucun artiste -->
     <div th:if="${#lists.isEmpty(artists)}" class="alert alert-info">
         Aucun artiste à afficher.
     </div>
-
 </div>
 </body>
 </html>
