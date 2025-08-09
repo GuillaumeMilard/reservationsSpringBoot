@@ -1,13 +1,11 @@
 <!DOCTYPE html>
-<html lang="fr" xmlns:layout="http://www.ultraq.net.mx/thymeleaf/layout"
+<html lang="fr" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
       layout:decorate="~{layouts/main}">
 <head>
     <title>Fiche d'un artiste</title>
 </head>
 <body>
-<div class="container">
-
-    <div layout:fragment="content">
+<div class="container" layout:fragment="content">
 
         <h1 class="mb-4">Fiche artiste</h1>
         <!-- Détails de l'artiste -->
@@ -21,7 +19,6 @@
             <!-- Fragment de confirmation pour suppression -->
             <div th:replace="~{fragments/delete :: deleteForm(${artist}, 'artists')}"></div>
         </div>
-    </div>
 </div>
 </body>
 </html>

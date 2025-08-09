@@ -1,5 +1,6 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org"
+<html lang = "fr"
+      xmlns:th="http://www.thymeleaf.org"
       xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
       layout:decorate="~{layouts/main}">
 <head>
@@ -8,7 +9,7 @@
 <body>
 <div layout:fragment="content" class="container mt-5">
 
-    <h2 class="mb-4">Gestion des types</h2>
+    <h2 class="mb-4" th:text="${title}">Liste des types</h2>
 
     <!-- Lien de création -->
     <div class="mb-3">
@@ -21,7 +22,7 @@
         <thead>
         <tr>
             <!-- <th>ID</th> -->
-            <th>Nom du type</th>
+            <th>Nom type</th>
             <th>Actions</th>
         </tr>
         </thead>

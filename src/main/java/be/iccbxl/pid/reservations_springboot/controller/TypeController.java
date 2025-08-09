@@ -38,7 +38,8 @@ public class TypeController {
         Optional<Type> optionalType = typeService.getType(id);
 
         if (optionalType.isEmpty()) {
-            redirAttrs.addFlashAttribute("errorMessage", "Type introuvable !");
+            redirAttrs.addFlashAttribute("errorMessage",
+                    "Type introuvable !");
             return "redirect:/types";
         }
         // Si le type existe, on l'ajoute au modèle
@@ -58,32 +59,34 @@ public class TypeController {
         return "type/create";
     }
 
-
+    // Enregistrer le formulaire de création d'un nouveau type
     @PostMapping("/types/create")
     public String store(@Valid @ModelAttribute Type type, BindingResult bindingResult,
                         Model model, RedirectAttributes redirAttrs) {
         if (bindingResult.hasErrors()) {
-            model.addAttribute("errorMessage", "Échec de la création du type d'artiste !");
+            model.addAttribute("errorMessage",
+                    "Échec de la création du type d'artiste !");
             return "type/create";
         }
         typeService.addType(type);
-        redirAttrs.addFlashAttribute("successMessage", "Type créé avec succès.");
+        redirAttrs.addFlashAttribute("successMessage",
+                "Type créé avec succès.");
         return "redirect:/types/" + type.getId();
     }
 
 
-    // Afficher le formulaire d'édition d'un type dont l'id est passé en paramètre dans l'URL
+    // Afficher le formulaire d'édition d'un type
+    // dont l'id est passé en paramètre dans l'URL
     @GetMapping("/types/{id}/edit")
     public String edit(@PathVariable Long id,
                        Model model,
                        RedirectAttributes redirAttrs) {
-
         Optional<Type> optionalType = typeService.getType(id);
         if (optionalType.isEmpty()) {
-            redirAttrs.addFlashAttribute("errorMessage", "Type introuvable !");
+            redirAttrs.addFlashAttribute("errorMessage",
+                    "Type introuvable !");
             return "redirect:/types";
         }
-
         Type type = optionalType.get();
         model.addAttribute("type", type);
         model.addAttribute("back", "/types/" + type.getId());
@@ -103,12 +106,14 @@ public class TypeController {
         // Vérifier si le type existe avant de le mettre à jour
         Optional<Type> existingType = typeService.getType(id);
         if (existingType.isEmpty()) {
-            redirAttrs.addFlashAttribute("errorMessage", "Type introuvable !");
+            redirAttrs.addFlashAttribute("errorMessage",
+                    "Type introuvable !");
             return "redirect:/types";
         }
         // Mettre à jour le type
         typeService.updateType(id, type);
-        redirAttrs.addFlashAttribute("successMessage", "Type modifié avec succès.");
+        redirAttrs.addFlashAttribute("successMessage",
+                "Type modifié avec succès.");
         return "redirect:/types/" + id;
     }
 
@@ -121,9 +126,11 @@ public class TypeController {
         Optional<Type> type = typeService.getType(id);
         if (type.isPresent()) {
             typeService.deleteType(id);
-            redirAttrs.addFlashAttribute("successMessage", "Type supprimé avec succès.");
+            redirAttrs.addFlashAttribute("successMessage",
+                    "Type supprimé avec succès.");
         } else {
-            redirAttrs.addFlashAttribute("errorMessage", "Type introuvable !");
+            redirAttrs.addFlashAttribute("errorMessage",
+                    "Type introuvable !");
         }
         return "redirect:/types";
     }

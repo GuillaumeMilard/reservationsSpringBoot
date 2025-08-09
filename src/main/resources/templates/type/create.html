@@ -1,6 +1,9 @@
 <!DOCTYPE html>
-<html xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" xmlns:th="http://www.w3.org/1999/xhtml"
-      layout:decorate="~{layouts/main}">
+<html lang="fr"
+     xmlns:th="http://www.thymeleaf.org"
+     xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+     layout:decorate="~{layouts/main}">
+
     <head>
         <title>Création d'un type</title>
         <style>
@@ -8,11 +11,9 @@
         </style>
     </head>
     <body>
+        <div class="container" layout:fragment="content">
 
-        <div class="container">
-            <div layout:fragment="content">
-
-                <h2>Créer nouveau type</h2>
+                <h2>Créer type</h2>
 
                 <!-- Formulaire de création -->
                 <form th:action="@{/types/create}" th:object="${type}" method="post">
@@ -26,12 +27,11 @@
                              th:if="${#fields.hasErrors('name')}" th:errors="*{name}"></div>
                     </div>
                     <div class="d-flex gap-3 mt-3">
-                        <button type="submit" class="btn btn-success"> <i class="bi bi-check me-1"></i>Add</button>
-                        <a th:href="${back}" class="btn btn-secondary"><i class="bi bi-x-circle me-1"></i>Cancel</a>
-                        <a th:href="@{/types}" class="btn btn-outline-secondary"><i class="bi bi-arrow-left me-1"></i>Back to index</a>
+                        <button type="submit" class="btn btn-success btn-sm"> <i class="bi bi-check me-1"></i>Add</button>
+                        <a th:href="${back}" class="btn btn-secondary btn-sm"><i class="bi bi-x-circle me-1"></i>Cancel</a>
+                        <a th:href="@{/types}" class="btn btn-outline-secondary btn-sm"><i class="bi bi-arrow-left me-1"></i>Back to list</a>
                     </div>
                 </form>
-            </div>
         </div>
     </body>
 </html>
