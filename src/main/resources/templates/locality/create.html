@@ -18,14 +18,16 @@
         <div class="row g-3">
             <div class="col-sm-4">
                 <label for="postalCode" class="form-label">Code postal</label>
-                <input type="text" id="postalCode" th:field="*{postalCode}" class="form-control"
+                <input type="text" id="postalCode" th:field="*{postalCode}" minlength="4" maxlength="6" required
+                       class="form-control"
                        th:classappend="${#fields.hasErrors('postalCode')} ? ' is-invalid'">
                 <div class="invalid-feedback" th:if="${#fields.hasErrors('postalCode')}" th:errors="*{postalCode}"></div>
             </div>
 
             <div class="col-sm-8">
                 <label for="name" class="form-label">Nom localité</label>
-                <input type="text" id="name" th:field="*{name}" class="form-control"
+                <input type="text" id="name" th:field="*{name}" minlength="2" maxlength="60" required
+                       class="form-control"
                        th:classappend="${#fields.hasErrors('name')} ? ' is-invalid'">
                 <div class="invalid-feedback" th:if="${#fields.hasErrors('name')}" th:errors="*{name}"></div>
             </div>

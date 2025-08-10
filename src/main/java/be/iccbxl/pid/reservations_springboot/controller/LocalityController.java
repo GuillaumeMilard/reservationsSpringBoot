@@ -1,15 +1,13 @@
 package be.iccbxl.pid.reservations_springboot.controller;
 
+import be.iccbxl.pid.reservations_springboot.exception.DuplicateFieldException;
 import be.iccbxl.pid.reservations_springboot.model.Locality;
 import be.iccbxl.pid.reservations_springboot.service.LocalityService;
 import jakarta.validation.Valid;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.util.Optional;
@@ -73,10 +71,24 @@ public class LocalityController {
                     "Échec de la création de la localité !");
             return "locality/create";
         }
-        localityService.addLocality(locality);
-        redirAttrs.addFlashAttribute("successMessage",
-                "Localité créée avec succès !");
-        return "redirect:/localities/" + locality.getId();
+        try {
+            localityService.addLocality(locality);
+            redirAttrs.addFlashAttribute("successMessage",
+                    "Localité créée avec succès !");
+            return "redirect:/localities/" + locality.getId();
+
+        } catch (DuplicateFieldException dfe) {
+            bindingResult.rejectValue(
+                    dfe.getField(),
+                    "unique",
+                    dfe.getField().equals("postalCode")
+                            ? "Ce code postal existe déjà."
+                            : "Ce nom de localité existe déjà."
+            );
+            model.addAttribute("errorMessage",
+                    "Échec de la création de la localité !");
+            return "locality/create";
+        }
     }
 
 
@@ -98,27 +110,69 @@ public class LocalityController {
         return "locality/edit";
     }
 
-
-    // Enregistrer les modifications d'une localité
-    @PostMapping("/localities/{id}/edit")
+    @PutMapping("/localities/{id}")
     public String update(@PathVariable Long id,
-                         @Valid Locality locality,
+                         @Valid @ModelAttribute("locality") Locality locality,
                          BindingResult bindingResult,
-                         RedirectAttributes redirAttrs) {
+                         Model model,
+                         RedirectAttributes redirect) {
+
         if (bindingResult.hasErrors()) {
+            model.addAttribute("errorMessage",
+                    "Échec de la modification !");
             return "locality/edit";
         }
+
         Optional<Locality> existingLocality = localityService.getLocality(id);
         if (existingLocality.isEmpty()) {
-            redirAttrs.addFlashAttribute("errorMessage",
+            redirect.addFlashAttribute("errorMessage",
                     "Localité introuvable !");
             return "redirect:/localities";
         }
-        localityService.updateLocality(id, locality);
-        redirAttrs.addFlashAttribute("successMessage",
+        // Si la localité existe, faire la mise à jour
+        try {
+            // s’assurer qu’on met à jour la bonne entité
+            locality.setId(id);
+            localityService.updateLocality(id, locality);
+            redirect.addFlashAttribute("successMessage",
                     "Localité mise à jour avec succès !");
-        return "redirect:/localities/" + id;
+            return "redirect:/localities/" + id;
+
+        } catch (DuplicateFieldException dfe) {
+            bindingResult.rejectValue(
+                    dfe.getField(),
+                    "unique",
+                    dfe.getField().equals("postalCode")
+                            ? "Ce code postal existe déjà."
+                            : "Ce nom de localité existe déjà."
+            );
+            model.addAttribute("errorMessage",
+                    "Échec de la modification !");
+            return "locality/edit";
+        }
     }
+
+
+//    // Enregistrer les modifications d'une localité
+//    @PutMapping("/localities/{id}")
+//    public String update(@PathVariable Long id,
+//                         @Valid Locality locality,
+//                         BindingResult bindingResult,
+//                         RedirectAttributes redirAttrs) {
+//        if (bindingResult.hasErrors()) {
+//            return "locality/edit";
+//        }
+//        Optional<Locality> existingLocality = localityService.getLocality(id);
+//        if (existingLocality.isEmpty()) {
+//            redirAttrs.addFlashAttribute("errorMessage",
+//                    "Localité introuvable !");
+//            return "redirect:/localities";
+//        }
+//        localityService.updateLocality(id, locality);
+//        redirAttrs.addFlashAttribute("successMessage",
+//                    "Localité mise à jour avec succès !");
+//        return "redirect:/localities/" + id;
+//    }
 
 
     // Supprimer une localité

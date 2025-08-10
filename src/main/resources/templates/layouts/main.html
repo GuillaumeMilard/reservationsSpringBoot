@@ -21,20 +21,40 @@
     </head>
 
     <body>
-
         <!-- Header commun -->
         <div th:replace="~{fragments/header :: header}">Header here</div>
 
-        <div class="container">
-            <!-- Notifications -->
-            <div id="notification" layout:fragment="notification">
-                <div th:if="${successMessage}" class="alert alert-success">
-                    <p th:text="${successMessage}"></p>
-                </div>
-                <div th:if="${errorMessage}" class="alert alert-danger">
-                    <p th:text="${errorMessage}"></p>
-                </div>
-            </div>
+               <div class="container">
+                   <!-- Notifications -->
+                   <div th:if="${successMessage}"
+                        class="alert alert-success alert-dismissible fade show"
+                        role="alert" aria-live="polite">
+                       <p class="mb-0" th:text="${successMessage}">Opération réussie.</p>
+                       <button type="button"
+                               class="btn-close"
+                               data-bs-dismiss="alert"
+                               aria-label="Fermer"></button>
+                   </div>
+
+                   <div th:if="${errorMessage}"
+                        class="alert alert-danger alert-dismissible fade show"
+                        role="alert" aria-live="assertive">
+                       <p class="mb-0" th:text="${errorMessage}">Une erreur est survenue.</p>
+                       <button type="button"
+                               class="btn-close"
+                               data-bs-dismiss="alert"
+                               aria-label="Fermer"></button>
+                   </div>
+
+                   <!-- Notifications
+                   <div id="notification" layout:fragment="notification">
+                       <div th:if="${successMessage}" class="alert alert-success">
+                           <p th:text="${successMessage}"></p>
+                       </div>
+                       <div th:if="${errorMessage}" class="alert alert-danger">
+                           <p th:text="${errorMessage}"></p>
+                       </div>
+                   </div> -->
 
             <!-- Contenu dynamique principal injecté par les pages enfants -->
             <div layout:fragment="content">
