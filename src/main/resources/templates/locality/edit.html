@@ -14,9 +14,9 @@
     <form th:action="@{/localities/{id}(id=${locality.id})}"
            th:object="${locality}" method="post">
         <input type="hidden" name="_method" value="put" />
-        <!-- CSRF Token
+        <!-- CSRF Token -->
         <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}" />
-        -->
+
         <div class="mb-3">
             <label for="postalCode" class="form-label">Code postal</label>
             <input type="text" id="postalCode" th:field="*{postalCode}" class="form-control"

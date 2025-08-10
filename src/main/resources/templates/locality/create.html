@@ -12,9 +12,9 @@
     <h2>Créer localité</h2>
 
     <form th:action="@{/localities/create}" th:object="${locality}" method="post">
-        <!-- CSRF Token pour la sécurité
-        <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}" />
-        -->
+        <!-- CSRF Token pour la sécurité -->
+        <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}"/>
+
         <div class="row g-3">
             <div class="col-sm-4">
                 <label for="postalCode" class="form-label">Code postal</label>
