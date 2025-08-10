@@ -1,5 +1,8 @@
 package be.iccbxl.pid.reservations_springboot.model;
 
+import lombok.Getter;
+
+@Getter
 public enum UserRole {
     ADMIN("admin"),
     MEMBER("member"),
@@ -7,14 +10,10 @@ public enum UserRole {
     PRESS("press"),
     PRODUCER("producer");
 
-    private String role;
+    private final String value;
 
-    UserRole(String role) {
-        this.role = role;
-    }
-
-    public String getValue() {
-        return role;
+    UserRole(String value) {
+        this.value = value;
     }
 
 }

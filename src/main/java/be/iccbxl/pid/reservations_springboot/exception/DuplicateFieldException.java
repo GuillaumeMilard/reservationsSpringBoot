@@ -1,5 +1,8 @@
 package be.iccbxl.pid.reservations_springboot.exception;
 
+import lombok.Getter;
+
+@Getter
 public class DuplicateFieldException extends RuntimeException {
 
     private final String field;
@@ -9,7 +12,9 @@ public class DuplicateFieldException extends RuntimeException {
         this.field = field;
     }
 
-    public String getField() {
-        return field;
+    public DuplicateFieldException(String field, String message) {
+        super(message);
+        this.field = field;
     }
+
 }
