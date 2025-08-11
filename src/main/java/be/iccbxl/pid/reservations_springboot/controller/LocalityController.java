@@ -1,6 +1,7 @@
 package be.iccbxl.pid.reservations_springboot.controller;
 
 import be.iccbxl.pid.reservations_springboot.exception.DuplicateFieldException;
+import be.iccbxl.pid.reservations_springboot.model.Artist;
 import be.iccbxl.pid.reservations_springboot.model.Locality;
 import be.iccbxl.pid.reservations_springboot.service.LocalityService;
 import jakarta.validation.Valid;
@@ -10,6 +11,7 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import java.util.List;
 import java.util.Optional;
 
 @Controller
@@ -24,7 +26,8 @@ public class LocalityController {
     // Afficher la liste des localités
     @GetMapping("/localities")
     public String index(Model model) {
-        model.addAttribute("localities", localityService.getAll());
+        List<Locality> localities = localityService.getAll();
+        model.addAttribute("localities", localities);
         model.addAttribute("title", "Liste des localités");
         return "locality/index";
     }

@@ -12,6 +12,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
+import static be.iccbxl.pid.reservations_springboot.util.ValidationUtils.*;
+
 @Service
 @Transactional(readOnly = true)
 public class RoleService {
@@ -38,9 +40,12 @@ public RoleService(RoleRepository roleRepository) {
 
     @Transactional
     public void addRole(Role role) {
-        if (role == null || role.getName() == null) {
-            throw new IllegalArgumentException("Role name must not be null");
-        }
+
+        requireNonNull(role, "Role cannot be null.");
+        requireNonNull(role.getName(), "Role name cannot be null.");
+        requireLengthBetween(role.getName().getValue(), 2, 60,
+                "Role name must be between 1 and 50 characters.");
+
         if (roleRepository.existsByName(role.getName())) {
             throw new DuplicateFieldException("name");
         }
@@ -50,9 +55,9 @@ public RoleService(RoleRepository roleRepository) {
     @Transactional
     public void updateRole(Long id, Role role) {
 
-        if (role == null || role.getName() == null) {
-            throw new IllegalArgumentException("Role name must not be null");
-        }
+        requireNonNull(role, "Role cannot be null.");
+        requireNonNull(role.getName(), "Role name cannot be null.");
+
         Role existingRole = roleRepository.findById(id)
                 .orElseThrow(() -> new IllegalArgumentException("Role with id " + id + " does not exist"));
 

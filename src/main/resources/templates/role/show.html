@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="fr"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layouts/main}">
+<head>
+    <title>Fiche d'un rôle</title>
+</head>
+<body>
+<div layout:fragment="content" class="container mt-5">
+
+    <h2 class="mb-4" th:text="${title}">Fiche rôle</h2>
+
+    <!-- Détails du rôle -->
+    <dl class="row">
+        <!-- <dt class="col-sm-2">ID</dt>
+        <dd class="col-sm-10" th:text="${role.id}">1</dd> -->
+
+        <dt class="col-sm-2">Nom</dt>
+        <!--
+          Si vous avez gardé @Enumerated(EnumType.STRING),
+          ${role.name} affichera ADMIN/MEMBER/... (nom de la constante enum).         }.
+        -->
+        <dd class="col-sm-10" th:text="${role.name}">ADMIN</dd>
+    </dl>
+
+    <!-- Actions -->
+    <div class="d-flex gap-2 mt-4">
+        <a th:href="@{/roles}"
+           class="btn btn-secondary btn-sm"><i class="bi bi-arrow-left"></i>Return to list</a>
+        <a th:href="@{/roles/{id}/edit(id=${role.id})}" class="btn btn-warning btn-sm">
+            <i class="bi bi-pencil"></i>Edit</a>
+        <!-- Fragment de confirmation pour suppression -->
+        <div th:replace="~{fragments/delete :: deleteForm(${role}, 'roles')}"></div>
+    </div>
+</div>
+</body>
+</html>

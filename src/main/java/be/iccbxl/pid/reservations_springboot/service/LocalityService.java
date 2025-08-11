@@ -5,18 +5,22 @@ import be.iccbxl.pid.reservations_springboot.model.Locality;
 import be.iccbxl.pid.reservations_springboot.repository.LocalityRepository;
 import jakarta.persistence.EntityNotFoundException;
 import jakarta.transaction.Transactional;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
+import static be.iccbxl.pid.reservations_springboot.util.ValidationUtils.*;
+
 @Service
 public class LocalityService {
 
-    @Autowired
-    private LocalityRepository localityRepository;
+    private final LocalityRepository localityRepository;
+
+    public LocalityService(LocalityRepository localityRepository) {
+        this.localityRepository = localityRepository;
+    }
 
     public List<Locality> getAll() {
         List<Locality> localities = new ArrayList<>();
@@ -28,7 +32,17 @@ public class LocalityService {
         return localityRepository.findById(id);
     }
 
+    @Transactional
     public void addLocality(Locality locality) {
+
+        requireNonNull(locality, "Locality cannot be null.");
+        requireNonEmpty(locality.getPostalCode(), "Postal code cannot be null or empty.");
+        requireNonEmpty(locality.getName(), "Locality name cannot be null or empty.");
+        requireLengthBetween(locality.getPostalCode(), 4, 6,
+                "Postal code must be between 4 and 6 characters.");
+        requireLengthBetween(locality.getName(), 2, 60,
+                "Locality name must be between 2 and 60 characters.");
+
         if (localityRepository.existsByPostalCode(locality.getPostalCode())) {
             throw new DuplicateFieldException("postalCode");
         }
@@ -40,6 +54,12 @@ public class LocalityService {
 
     @Transactional
     public void updateLocality(Long id, Locality locality) {
+        requireNonNull(locality, "Locality cannot be null.");
+        requireNonEmpty(locality.getPostalCode(),
+                "Postal code cannot be null or empty.");
+        requireNonEmpty(locality.getName(),
+                "Locality name cannot be null or empty.");
+
         // Vérification de l'existence de la localité
         Locality existingLocality = localityRepository.findById(id)
                 .orElseThrow(() -> new EntityNotFoundException("Localité introuvable"));
@@ -58,11 +78,7 @@ public class LocalityService {
         localityRepository.save(existingLocality);
     }
 
-//    public void updateLocality(Long id, Locality locality) {
-//       localityRepository.save(locality);
-//    }
-
-
+    @Transactional
     public void deleteLocality(Long id) {
         localityRepository.deleteById(id);
     }

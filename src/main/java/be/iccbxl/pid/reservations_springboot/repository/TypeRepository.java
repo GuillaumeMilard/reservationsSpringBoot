@@ -7,6 +7,10 @@ public interface TypeRepository extends CrudRepository<Type, Long> {
 
     Type findByName(String name);
 
+    Boolean existsByName(String name);
+
+    Boolean existsByNameAndIdNot (String name, Long id);
+
 }
 
 

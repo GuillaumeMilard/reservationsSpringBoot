@@ -22,7 +22,7 @@ public class ArtistController {
     // Afficher la liste des artistes
     @GetMapping("/artists")
     public String index(Model model) {
-        List<Artist> artists = service.getAllArtists();
+        List<Artist> artists = service.getAll();
         model.addAttribute("artists", artists);
         model.addAttribute("title", "Liste des artistes");
         return "artist/index";

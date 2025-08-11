@@ -13,7 +13,7 @@ public class ArtistService {
     @Autowired
     private ArtistRepository artistRepository;
 
-    public List<Artist> getAllArtists() {
+    public List<Artist> getAll() {
         List<Artist> artists = new ArrayList<>();
         artistRepository.findAll().forEach(artists::add);
         return artists;
