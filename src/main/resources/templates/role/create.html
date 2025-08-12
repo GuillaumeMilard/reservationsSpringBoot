@@ -17,9 +17,9 @@
 
     <!-- Formulaire de création -->
     <form th:action="@{/roles/create}" th:object="${role}" method="post">
-        <!-- CSRF Token pour la sécurité
+        <!-- CSRF Token pour la sécurité -->
         <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}" />
-        -->
+
         <div class="mb-3">
             <label for="name" class="form-label">Nom du rôle</label>
             <!-- Vous gardez @Enumerated(EnumType.STRING) : on poste le NOM de la constante (ADMIN, MEMBER, ...) -->
