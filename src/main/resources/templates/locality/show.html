@@ -12,17 +12,16 @@
             <h2 class="mb-4">Fiche localité</h2>
 
             <div th:if="${locality != null}">
+                <!-- Nom de la localité -->
                 <h4 th:text="|${locality.postalCode} ${locality.name}|">1000 Bruxelles</h4>
-
-                <!-- Lieux de spectacle
+                <!-- Lieux de spectacle-->
                 <ul th:if="${!#lists.isEmpty(locality.locations)}" class="list-unstyled">
                     <li th:each="location : ${locality.locations}"
                         th:text="${location.designation}">Dexia Art center</li>
                 </ul>
                 <p th:if="${#lists.isEmpty(locality.locations)}" class="text-muted">
                     Aucun lieu de spectacle.
-                </p> -->
-
+                </p>
                 <!-- Retour -->
                 <nav class="mt-3">
                     <a th:href="@{/localities}"

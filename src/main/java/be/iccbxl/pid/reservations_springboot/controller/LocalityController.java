@@ -155,29 +155,6 @@ public class LocalityController {
         }
     }
 
-
-//    // Enregistrer les modifications d'une localité
-//    @PutMapping("/localities/{id}")
-//    public String update(@PathVariable Long id,
-//                         @Valid Locality locality,
-//                         BindingResult bindingResult,
-//                         RedirectAttributes redirAttrs) {
-//        if (bindingResult.hasErrors()) {
-//            return "locality/edit";
-//        }
-//        Optional<Locality> existingLocality = localityService.getLocality(id);
-//        if (existingLocality.isEmpty()) {
-//            redirAttrs.addFlashAttribute("errorMessage",
-//                    "Localité introuvable !");
-//            return "redirect:/localities";
-//        }
-//        localityService.updateLocality(id, locality);
-//        redirAttrs.addFlashAttribute("successMessage",
-//                    "Localité mise à jour avec succès !");
-//        return "redirect:/localities/" + id;
-//    }
-
-
     // Supprimer une localité
     @DeleteMapping("/localities/{id}")
     public String delete(@PathVariable Long id,
