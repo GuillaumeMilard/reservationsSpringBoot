@@ -4,8 +4,12 @@ import com.github.slugify.Slugify;
 import jakarta.persistence.*;
 import lombok.*;
 
+import java.util.ArrayList;
+import java.util.List;
+
 @Entity
 @Getter @Setter
+@NoArgsConstructor
 @Table(name="locations")
 public class Location {
     @Id
@@ -20,12 +24,16 @@ public class Location {
     private String website;
     private String phone;
 
+    //Liste des spectacles créés dans ce lieu
+    @OneToMany(targetEntity=Show.class, mappedBy="location")
+    private List<Show> shows = new ArrayList<>();
+
+    //Localité (commune) où se situe le lieu
     @ManyToOne
     @JoinColumn(name="locality_id", nullable=false)
     private Locality locality;
 
-    protected Location() { }
-
+    // --- Constructeur ---
     public Location(String slug, String designation, String address, Locality locality, String website, String phone) {
         Slugify slg = new Slugify();
         if (slug == null || slug.isBlank()) {
@@ -52,10 +60,33 @@ public class Location {
     }
 
     public void setLocality(Locality locality) {
-        this.locality.removeLocation(this);	//déménager de l’ancienne localité
+        if (this.locality != null) {
+            this.locality.removeLocation(this);
+        }
         this.locality = locality;
-        this.locality.addLocation(this);		//emménager dans la nouvelle localité
+        if (locality != null) {
+            locality.addLocation(this);
+        }
     }
+
+    public Location addShow(Show show) {
+        if(!this.shows.contains(show)) {
+            this.shows.add(show);
+            show.setLocation(this);
+        }
+        return this;
+    }
+
+    public Location removeShow(Show show) {
+        if(this.shows.contains(show)) {
+            this.shows.remove(show);
+            if(show.getLocation().equals(this)) {
+                show.setLocation(null);
+            }
+        }
+        return this;
+    }
+
 
 
     @Override
@@ -65,4 +96,3 @@ public class Location {
                 + website + ", phone=" + phone + "]";
     }
 }
-

@@ -4,30 +4,48 @@ package be.iccbxl.pid.reservations_springboot.model;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
-@Data
-@NoArgsConstructor
-@AllArgsConstructor
+import java.util.ArrayList;
+import java.util.List;
+
 @Entity
 @Table(name="localities")
+@Getter @Setter @NoArgsConstructor
 public class Locality {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+//    @Setter(AccessLevel.NONE)
     private Long id;
 
-    @NotBlank(message = "The postal code must not be empty.")
-    @Size(min = 4, max = 6, message = "The postal code must be between 4 and 6 characters long.")
     @Column(name = "postal_code", length = 6, nullable = false, unique= true)
     private String postalCode;
 
-    @NotBlank(message = "The name must not be empty.")
-    @Size(min = 2, max = 60, message = "The name must be between 2 and 60 characters long.")
     @Column(name = "name", length = 60, nullable = false, unique = true)
     private String name;
+
+    @OneToMany( targetEntity=Location.class, mappedBy="locality" )
+    @Setter(AccessLevel.NONE)
+    private List<Location> locations = new ArrayList<>();
+
+    public Locality addLocation(Location location) {
+        if(!this.locations.contains(location)) {
+            this.locations.add(location);
+            location.setLocality(this);
+        }
+        return this;
+    }
+
+    public Locality removeLocation(Location location) {
+        if(this.locations.contains(location)) {
+            this.locations.remove(location);
+            if(location.getLocality().equals(this)) {
+                location.setLocality(null);// si tu acceptes un Location sans Locality
+            }
+        }
+        return this;
+    }
 
     @PrePersist
     @PreUpdate
@@ -42,6 +60,7 @@ public class Locality {
 
     @Override
     public String toString() {
-        return postalCode + " " + name;
+        return "Locality [id=" + id + ", postalCode=" + postalCode + ", locality=" + name + "]";
     }
+
 }
