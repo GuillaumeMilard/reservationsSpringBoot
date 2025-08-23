@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="fr"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layouts/main}">
+<head>
+    <title>Créer un Lieu</title>
+</head>
+<body>
+<div class="container mt-4" layout:fragment="content">
+
+    <h2>Créer un lieu</h2>
+
+    <form th:action="@{/locations}" th:object="${location}" method="post" class="needs-validation">
+        <div class="mb-3">
+            <label class="form-label">Nom</label>
+            <input type="text" th:field="*{designation}" class="form-control" required>
+        </div>
+
+        <div class="mb-3">
+            <label class="form-label">Adresse</label>
+            <input type="text" th:field="*{address}" class="form-control" required>
+        </div>
+
+        <div class="mb-3">
+            <label class="form-label">Localité</label>
+            <select th:field="*{localityId}" class="form-select">
+                <option th:each="loc : ${localities}" th:value="${loc.id}"
+                        th:text="${loc.postalCode + ' ' + loc.name}"></option>
+            </select>
+        </div>
+
+        <div class="mb-3">
+            <label class="form-label">Site web</label>
+            <input type="url" th:field="*{website}" class="form-control">
+        </div>
+
+        <div class="mb-3">
+            <label class="form-label">Téléphone</label>
+            <input type="text" th:field="*{phone}" class="form-control">
+        </div>
+
+        <button type="submit" class="btn btn-success">💾 Enregistrer</button>
+        <a href="/locations" class="btn btn-secondary">Annuler</a>
+    </form>
+</div>
+</body>
+</html>

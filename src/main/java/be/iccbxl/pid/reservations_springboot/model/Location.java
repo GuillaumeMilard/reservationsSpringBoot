@@ -9,7 +9,7 @@ import lombok.*;
 @Table(name="locations")
 public class Location {
     @Id
-    @GeneratedValue(strategy=GenerationType.AUTO)
+    @GeneratedValue(strategy=GenerationType.IDENTITY)
     private Long id;
 
     @Column(unique=true)
@@ -28,7 +28,11 @@ public class Location {
 
     public Location(String slug, String designation, String address, Locality locality, String website, String phone) {
         Slugify slg = new Slugify();
-
+        if (slug == null || slug.isBlank()) {
+            this.slug = slg.slugify(designation);
+        } else {
+            this.slug = slug;
+        }
         this.slug = slg.slugify(designation);
         this.designation = designation;
         this.address = address;
