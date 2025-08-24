@@ -1,0 +1,44 @@
+/* === Zone héro / carousel === */
+.hero-placeholder {
+    border: 2px solid #ccc;
+    height: 260px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #777;
+    background-color: #f8f9fa; /* gris clair */
+}
+
+/* === Footer === */
+.footer {
+    border-top: 1px solid #e5e5e5;
+    padding: 1rem 0;
+    margin-top: 2rem;
+    color: #666;
+    background-color: #f8f9fa;
+}
+
+/* === Menu latéral === */
+.sidebar {
+    background-color: #fdfdfd;
+    border-right: 1px solid #e5e5e5;
+    min-height: 100vh;
+}
+
+/* Liens actifs dans le menu */
+.sidebar .list-group-item.active {
+    background-color: #0d6efd;   /* bleu bootstrap */
+    color: white;
+    font-weight: 500;
+}
+
+/* === Cartes === */
+.card-custom {
+    max-width: 600px; /* largeur max */
+    margin: 0 auto;   /* centrage */
+}
+
+/* === Ajustement général === */
+body {
+    background-color: #fdfdfd; /* couleur générale du body */
+}
