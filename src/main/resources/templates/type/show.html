@@ -19,8 +19,13 @@
     <dt class="col-sm-2">Nom</dt>
     <dd class="col-sm-10" th:text="${type.name}">Comédien</dd>
   </dl>
+    <h2>Liste des artistes</h2>
+    <ul th:unless="${#lists.isEmpty(type.artists)}">
+        <li th:each="artist : ${type.artists}"
+            th:text="|${artist.firstname} ${artist.lastname}|">Firstname Lastname</li>
+    </ul>
 
-  <!-- Actions -->
+    <!-- Actions -->
   <div class="d-flex gap-2 mt-4">
     <a th:href="@{/types}"
        class="btn btn-secondary btn-sm"><i class="bi bi-arrow-left"></i>Return to list</a>
