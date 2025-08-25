@@ -1,10 +1,84 @@
 <!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <title>$Title$</title>
-</head>
-<body>
-$END$
-</body>
+<html lang="fr"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layouts/main}">
+    <head>
+        <title>Fiche d'un spectacle</title>
+    </head>
+    <body>
+        <div layout:fragment="content" class="container">
+
+            <h1 th:text="${show.title}">Ayiti</h1>
+
+            <p th:if="${show.posterUrl}">
+                <img th:src="@{'/images/'+${show.posterUrl}}" th:alt="${show.title}" src="/static/images/ayiti.jpg" alt="" width="200">
+            </p>
+            <canvas th:unless="${show.posterUrl}" width="200" height="100" style="border:1px solid #000000;"></canvas>
+
+            <p th:if="${show.location}"><strong>Lieu de création:</strong> <span th:text="${show.location.designation}">Art Center</span></p>
+
+            <p><strong>Prix:</strong> <span th:text="${show.price} + ' €'">9.99 €</span></p>
+
+            <p th:if="${show.bookable}"><em>Réservable</em></p>
+
+            <p th:unless="${show.bookable}"><em>Non réservable</em></p>
+
+            <h2>Liste des représentations</h2>
+            <ul th:if="${#lists.size(show.representations)>=1}">
+                <li th:each="representation : ${show.representations}"
+                    th:text="${#temporals.format(representation.scheduledAt,'dd-MM-yyyy HH:mm')}">12-10-2012 13:30
+                </li>
+            </ul>
+            <p th:if="${#lists.size(show.representations)==0}">Aucune représentation</p>
+            <nav><a th:href="@{/shows}">Retour à l'index</a></nav>
+        </div>
+    </body>
 </html>
+
+<!--<!DOCTYPE html>-->
+<!--<html lang="fr"-->
+<!--      xmlns:th="http://www.thymeleaf.org"-->
+<!--      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"-->
+<!--      layout:decorate="~{layouts/main}">-->
+<!--<head>-->
+<!--    <title th:text="${show.title}">Détails du spectacle</title>-->
+<!--</head>-->
+<!--<body>-->
+<!--<div class="container mt-4" layout:fragment="content">-->
+<!--    <h1 th:text="${show.title}">Titre du spectacle</h1>-->
+
+<!--    <ul class="list-group mb-3">-->
+<!--        <li class="list-group-item">-->
+<!--            <b>ID :</b> <span th:text="${show.id}"></span>-->
+<!--        </li>-->
+<!--        <li class="list-group-item">-->
+<!--            <b>Lieu :</b>-->
+<!--            <span th:text="${show.location != null ? show.location.designation : '—'}"></span>-->
+<!--        </li>-->
+<!--        <li class="list-group-item">-->
+<!--            <b>Localité :</b>-->
+<!--            <span th:text="${show.location != null ? show.location.locality.name : '—'}"></span>-->
+<!--        </li>-->
+<!--        <li class="list-group-item">-->
+<!--            <b>Prix :</b>-->
+<!--            <span th:text="${#numbers.formatDecimal(show.price,1,'POINT',2,'NONE')} + ' €'"></span>-->
+<!--        </li>-->
+<!--        <li class="list-group-item">-->
+<!--            <b>Réservable :</b>-->
+<!--            <span th:if="${show.bookable}" class="badge bg-success">Oui</span>-->
+<!--            <span th:unless="${show.bookable}" class="badge bg-secondary">Non</span>-->
+<!--        </li>-->
+<!--    </ul>-->
+
+<!--    <div class="d-flex gap-2">-->
+<!--        <a href="/shows" class="btn btn-secondary">⬅ Retour</a>-->
+<!--        <a th:href="@{|/shows/${show.id}/edit|}" class="btn btn-warning">✏️ Modifier</a>-->
+<!--        <form th:action="@{|/shows/${show.id}/delete|}" method="post" style="display:inline">-->
+<!--            <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}"/>-->
+<!--            <button type="submit" class="btn btn-danger">🗑️ Supprimer</button>-->
+<!--        </form>-->
+<!--    </div>-->
+<!--</div>-->
+<!--</body>-->
+<!--</html>-->

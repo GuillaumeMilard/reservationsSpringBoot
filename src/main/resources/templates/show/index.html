@@ -1,10 +1,82 @@
 <!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <title>$Title$</title>
-</head>
-<body>
-$END$
-</body>
+<html lang="fr"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layouts/main}">
+    <head>
+        <title>Liste des spectacles</title>
+    </head>
+    <body>
+        <div layout:fragment="content" class="container">
+            <h1 th:text="${title}">Liste des spectacles</h1>
+            <ul th:unless="${#lists.isEmpty(shows)}">
+                 <li th:each="show : ${shows}">
+                     <span th:text="${show.title}">Ayiti</span>
+                     <span th:if="${show.bookable}" th:text="${show.price} + ' €'">9.99 €</span>
+                     <span th:if="${#lists.size(show.representations)==1}">- 1 représentation</span>
+                     <span th:if="${#lists.size(show.representations)>1}"
+                           th:text="|- ${#lists.size(show.representations)} représentations|">- 2 représentations</span>
+                     <em th:if="${#lists.size(show.representations)==0}">aucune représentation</em>
+                     <a th:href="@{/shows/{id}(id=${show.id})}">View</a>
+                 </li>
+            </ul>
+        </div>
+    </body>
 </html>
+
+<!--<!DOCTYPE html>-->
+<!--<html lang="fr"-->
+<!--      xmlns:th="http://www.thymeleaf.org"-->
+<!--      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"-->
+<!--      layout:decorate="~{layouts/main}">-->
+<!--<head>-->
+<!--    <title th:text="${title}">Liste des spectacles</title>-->
+<!--</head>-->
+<!--<body>-->
+<!--<div class="container mt-4" layout:fragment="content">-->
+<!--    <h1 th:text="${title}">Liste des spectacles</h1>-->
+
+<!--    <div class="mb-3">-->
+<!--        <a th:href="@{/shows/create}" class="btn btn-primary">➕ Nouveau spectacle</a>-->
+<!--    </div>-->
+
+<!--    <div class="table-responsive">-->
+<!--        <table class="table table-bordered align-middle table-sm">-->
+<!--            <thead class="table-light">-->
+<!--            <tr class="text-center">-->
+<!--                <th>ID</th>-->
+<!--                <th>Titre</th>-->
+<!--                <th>Lieu</th>-->
+<!--                <th>Localité</th>-->
+<!--                <th>Prix</th>-->
+<!--                <th>Réservable</th>-->
+<!--                <th>Actions</th>-->
+<!--            </tr>-->
+<!--            </thead>-->
+<!--            <tbody>-->
+<!--            <tr th:each="show : ${shows}">-->
+<!--                <td class="text-nowrap" th:text="${show.id}"></td>-->
+<!--                <td class="text-nowrap">-->
+<!--                    <a th:href="@{|/shows/${show.id}|}" th:text="${show.title}"></a>-->
+<!--                </td>-->
+<!--                <td class="text-nowrap" th:text="${show.location != null ? show.location.designation : '—'}"></td>-->
+<!--                <td class="text-nowrap" th:text="${show.location != null ? show.location.locality.name : '—'}"></td>-->
+<!--                <td class="text-nowrap" th:text="${#numbers.formatDecimal(show.price, 1, 'POINT', 2, 'NONE')} + ' €'"></td>-->
+<!--                <td class="text-nowrap">-->
+<!--                    <span th:if="${show.bookable}" class="badge bg-success">Oui</span>-->
+<!--                    <span th:unless="${show.bookable}" class="badge bg-secondary">Non</span>-->
+<!--                </td>-->
+<!--                <td class="text-nowrap">-->
+<!--                    <a th:href="@{|/shows/${show.id}/edit|}" class="btn btn-warning btn-sm">✏️ Modifier</a>-->
+<!--                    <form th:action="@{|/shows/${show.id}/delete|}" method="post" style="display:inline">-->
+<!--                        <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}"/>-->
+<!--                        <button type="submit" class="btn btn-danger btn-sm">🗑️ Supprimer</button>-->
+<!--                    </form>-->
+<!--                </td>-->
+<!--            </tr>-->
+<!--            </tbody>-->
+<!--        </table>-->
+<!--    </div>-->
+<!--</div>-->
+<!--</body>-->
+<!--</html>-->
