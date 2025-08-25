@@ -55,6 +55,14 @@ public class Show {
     @OneToMany(targetEntity=Representation.class, mappedBy="show")
     private List<Representation> representations = new ArrayList<>();
 
+    /**
+     * -- GETTER --
+     *  Get the performances (artists in a type of collaboration) for the show
+     */
+    //Liste des artistes liés à ce spectacle via ArtistType
+    @ManyToMany(mappedBy = "shows")
+    private List<ArtistType> artistTypes = new ArrayList<>();
+
     // --- Slug basé sur title ---
     public void setTitle(String title) {
         this.title = title;
@@ -102,7 +110,24 @@ public class Show {
         return this;
     }
 
-        @Override
+    public Show addArtistType(ArtistType artistType) {
+        if(!this.artistTypes.contains(artistType)) {
+            this.artistTypes.add(artistType);
+            artistType.addShow(this);
+        }
+        return this;
+    }
+
+    public Show removeArtistType(ArtistType artistType) {
+        if(this.artistTypes.contains(artistType)) {
+            this.artistTypes.remove(artistType);
+            artistType.getShows().remove(this);
+        }
+        return this;
+    }
+
+
+    @Override
     public String toString() {
         return "Show{" +
                 "id=" + id +
