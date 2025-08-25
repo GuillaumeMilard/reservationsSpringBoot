@@ -6,6 +6,8 @@ import lombok.*;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 @Table(name="shows")
@@ -49,6 +51,10 @@ public class Show {
     @Column(name = "updated_at", nullable = true)
     private LocalDateTime updatedAt;
 
+    //Liste des représentations de ce spectacle
+    @OneToMany(targetEntity=Representation.class, mappedBy="show")
+    private List<Representation> representations = new ArrayList<>();
+
     // --- Slug basé sur title ---
     public void setTitle(String title) {
         this.title = title;
@@ -78,7 +84,25 @@ public class Show {
         }
     }
 
-    @Override
+    public Show addRepresentation(Representation representation) {
+        if(!this.representations.contains(representation)) {
+            this.representations.add(representation);
+            representation.setShow(this);
+        }
+        return this;
+    }
+
+    public Show removeRepresentation(Representation representation) {
+        if (this.representations.contains(representation)) {
+            this.representations.remove(representation);
+            if (representation.getLocation().equals(this)) {
+                representation.setLocation(null);
+            }
+        }
+        return this;
+    }
+
+        @Override
     public String toString() {
         return "Show{" +
                 "id=" + id +
@@ -90,6 +114,7 @@ public class Show {
                 ", price=" + price +
                 ", createdAt=" + createdAt +
                 ", updatedAt=" + updatedAt +
+                ", representations=" + representations.size() +
                 '}';
     }
 
