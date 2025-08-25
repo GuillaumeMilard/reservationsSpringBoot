@@ -9,7 +9,7 @@
     <body>
         <div layout:fragment="content" class="container">
 
-            <h1 th:text="${show.title}">Ayiti</h1>
+            <h2 th:text="${show.title}">Ayiti</h2>
 
             <p th:if="${show.posterUrl}">
                 <img th:src="@{'/images/'+${show.posterUrl}}" th:alt="${show.title}" src="/static/images/ayiti.jpg" alt="" width="200">
@@ -24,13 +24,24 @@
 
             <p th:unless="${show.bookable}"><em>Non réservable</em></p>
 
-            <h2>Liste des représentations</h2>
+            <h3>Liste des représentations</h3>
             <ul th:if="${#lists.size(show.representations)>=1}">
                 <li th:each="representation : ${show.representations}"
                     th:text="${#temporals.format(representation.scheduledAt,'dd-MM-yyyy HH:mm')}">12-10-2012 13:30
                 </li>
             </ul>
             <p th:if="${#lists.size(show.representations)==0}">Aucune représentation</p>
+
+            <h2>Liste des artistes</h2>
+            <div th:each="entry : ${collaborateurs}">
+                <p>
+                    <strong th:text="${entry.key} + ':'"></strong>
+                    <span th:each="artist,iter : ${entry.value}"
+                          th:remove="tag"
+                          th:text="${artist.firstname} + ' ' + ${artist.lastname} + (${iter.count}==${iter.size}-1 ? ' et ':(${iter.last}?'':', '))">Firstname Lastname
+                    </span>
+                </p>
+            </div>
             <nav><a th:href="@{/shows}">Retour à l'index</a></nav>
         </div>
     </body>

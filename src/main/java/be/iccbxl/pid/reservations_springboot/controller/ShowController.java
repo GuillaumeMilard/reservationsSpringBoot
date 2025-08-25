@@ -1,5 +1,7 @@
 package be.iccbxl.pid.reservations_springboot.controller;
 
+import be.iccbxl.pid.reservations_springboot.model.Artist;
+import be.iccbxl.pid.reservations_springboot.model.ArtistType;
 import be.iccbxl.pid.reservations_springboot.model.Show;
 import be.iccbxl.pid.reservations_springboot.service.ShowService;
 import org.springframework.ui.Model;
@@ -9,7 +11,10 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
+import java.util.TreeMap;
 
 @Controller
 public class ShowController {
@@ -33,9 +38,17 @@ public class ShowController {
     @GetMapping("/shows/{id}")
     public String show(Model model, @PathVariable("id") Long id) {
         Show show = showService.getShow(id);
+        Map<String, List<Artist>> collaborateurs = new TreeMap<>();
+        for (ArtistType at : show.getArtistTypes()) {
+            String type = at.getType().getName();
+            collaborateurs
+                    .computeIfAbsent(type, k -> new ArrayList<>())
+                    .add(at.getArtist());
+        }
+        model.addAttribute("collaborateurs", collaborateurs);
         model.addAttribute("show", show);
         model.addAttribute("title", "Fiche Spectacle");
-        return "show/show";// => templates/show/show.html
+        return "show/show";
     }
 
     // --- Afficher le formulaire de création de spectacle ---
