@@ -7,6 +7,8 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 @Getter
@@ -33,11 +35,34 @@ public class Representation {
     @JoinColumn(name="location_id", nullable=true)
     private Location location;
 
+    //Utilisateurs ayant réservé cette représentation
+    @ManyToMany
+    @JoinTable(
+            name = "reservations",
+            joinColumns = @JoinColumn(name = "representation_id"),
+            inverseJoinColumns = @JoinColumn(name = "user_id"))
+    private List<User> users = new ArrayList<>();
 
     public Representation(Show show, LocalDateTime scheduledAt, Location location) {
         this.show = show;
         this.scheduledAt = scheduledAt;
         this.location = location;
+    }
+
+    public Representation addUser(User user) {
+        if(!this.users.contains(user)) {
+            this.users.add(user);
+            user.addRepresentation(this);
+        }
+        return this;
+    }
+
+    public Representation removeUser(User user) {
+        if(this.users.contains(user)) {
+            this.users.remove(user);
+            user.getRepresentations().remove(this);
+        }
+        return this;
     }
 
     @Override
