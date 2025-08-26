@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="fr"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layouts/main}">
+<head>
+    <meta charset="UTF-8">
+    <title>Modifier réservation</title>
+</head>
+<body>
+<div layout:fragment="content" class="container mt-5">
+<h1>Modifier la réservation</h1>
+
+<form th:action="@{/reservations/{id}/update(id=${reservation.id})}" method="post">
+    <label for="places">Nombre de places :</label>
+    <input type="number" id="places" name="places" min="1" th:value="${reservation.places}"/>
+
+    <button type="submit">Enregistrer</button>
+</form>
+
+<a th:href="@{/reservations}"><button>Annuler</button></a>
+</div>
+</body>
+</html>

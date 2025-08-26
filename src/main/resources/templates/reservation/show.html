@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="fr"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layouts/main}">
+<head>
+    <title>Détails réservation</title>
+</head>
+<body>
+<div layout:fragment="content" class="container mt-5">
+<h1>Détails de la réservation</h1>
+
+<p><strong>Date :</strong> <span th:text="${reservation.representation.scheduledAt}"></span></p>
+<p><strong>Spectacle :</strong> <span th:text="${reservation.representation.show.title}"></span></p>
+<p><strong>Lieu :</strong> <span th:text="${reservation.representation.location.designation}"></span></p>
+<p><strong>Nombre de places :</strong> <span th:text="${reservation.places}"></span></p>
+
+<hr>
+<a th:href="@{/reservations/{id}/edit(id=${reservation.id})}">
+    <button>Modifier</button>
+</a>
+
+<form th:action="@{/reservations/{id}/delete(id=${reservation.id})}" method="post" style="display:inline;">
+    <button type="submit">Annuler</button>
+</form>
+
+<a th:href="@{/reservations}"><button>Retour</button></a>
+</div>
+</body>
+</html>
