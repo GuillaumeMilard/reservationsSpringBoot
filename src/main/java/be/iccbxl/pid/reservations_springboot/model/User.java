@@ -1,11 +1,7 @@
 package be.iccbxl.pid.reservations_springboot.model;
 
 import jakarta.persistence.*;
-import jakarta.validation.constraints.Email;
-import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.Size;
 import lombok.*;
-
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
@@ -22,25 +18,18 @@ public class User {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @NotBlank(message = "Le login est obligatoire")
     @Column(nullable = false, unique = true, length = 60)
     private String login;
 
-    @NotBlank(message = "Le mot de passe est obligatoire")
-    @Size(min = 8, message = "Le mot de passe doit contenir au moins 8 caractères")
-    @Column(nullable = false)
+    @Column(nullable = false, length = 255)
     private String password;
 
-    @NotBlank(message = "Le prénom est obligatoire")
     @Column(nullable = false, length = 60)
     private String firstname;
 
-    @NotBlank(message = "Le nom est obligatoire")
     @Column(nullable = false, length = 60)
     private String lastname;
 
-    @Email(message = "L'adresse email doit être valide")
-    @NotBlank(message = "L'email est obligatoire")
     @Column(nullable = false, unique = true, length = 255)
     private String email;
 
@@ -54,8 +43,19 @@ public class User {
     @Column(name = "created_at", updatable = false, nullable = false)
     private LocalDateTime createdAt;
 
+    @PrePersist
+    public void prePersist() {
+        this.createdAt = LocalDateTime.now();
+        this.updatedAt = LocalDateTime.now();
+    }
+
     @Column(name = "updated_at")
     private LocalDateTime updatedAt;
+
+    @PreUpdate
+    public void preUpdate() {
+        this.updatedAt = LocalDateTime.now();
+    }
 
     @Column(name = "email_verified_at")
     private LocalDateTime emailVerifiedAt;
@@ -66,9 +66,8 @@ public class User {
     @ManyToMany(mappedBy = "users")
     private List<Role> roles = new ArrayList<>();
 
-    @ManyToMany(mappedBy = "users")
-    private List<Representation> representations = new ArrayList<>();
-
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
+    private List<Reservation> reservations = new ArrayList<>();
 
     public User(String login, String firstname, String lastname, String email, String langue, UserRole role) {
         this.login = login;
@@ -95,22 +94,15 @@ public class User {
         return this;
     }
 
-    public User addRepresentation(Representation representation) {
-        if(!this.representations.contains(representation)) {
-            this.representations.add(representation);
-            representation.addUser(this);
-        }
-        return this;
+    public void addReservation(Reservation reservation) {
+        reservations.add(reservation);
+        reservation.setUser(this);
     }
 
-    public User removeRepresentation(Representation representation) {
-        if(this.representations.contains(representation)) {
-            this.representations.remove(representation);
-            representation.getUsers().remove(this);
-        }
-        return this;
+    public void removeReservation(Reservation reservation) {
+        reservations.remove(reservation);
+        reservation.setUser(null);
     }
-
 
     @Override
     public String toString() {
