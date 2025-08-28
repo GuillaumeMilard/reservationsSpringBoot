@@ -81,4 +81,18 @@ public class UserService {
         u.setPassword(passwordEncoder.encode(dto.getPassword()));
         return userRepository.save(u).getId();
     }
+
+    public void updateProfile(Long id, User updated) {
+        User user = userRepository.findById(id).orElseThrow();
+        user.setFirstname(updated.getFirstname());
+        user.setLastname(updated.getLastname());
+        user.setEmail(updated.getEmail());
+        user.setLangue(updated.getLangue());
+        userRepository.save(user);
+    }
+
+
+    public void deleteOwnAccount(Long id) {
+        userRepository.deleteById(id);
+    }
 }
